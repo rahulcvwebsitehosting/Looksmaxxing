@@ -49,8 +49,8 @@ export async function POST(req: NextRequest) {
       provider: providerUsed,
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Internal server error";
-    console.error("[analyze] Error:", message);
+    console.error("[analyze] Error:", err instanceof Error ? err.message : err);
+    const message = err instanceof Error ? "Analysis failed. Please try again." : "Internal server error";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

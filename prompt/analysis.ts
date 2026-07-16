@@ -4,7 +4,7 @@ export function buildAnalysisPrompt(): string {
 CRITICAL RULES:
 1. Be honest but constructive. Never use insults, mocking, or exaggerated claims.
 2. Return ONLY valid JSON. No markdown wrapping, no explanations, no conversational text — just the raw JSON object.
-3. All scores must be on a scale of 1-10 (or 0-100 for confidence).
+3. All scores must be on a scale of 0-10 (or 0-100 for confidence).
 4. Frame all output as AI-generated aesthetic opinions, not objective scientific facts.
 5. Distinguish between well-supported advice (skincare, grooming, photography, sleep) and ideas with limited scientific evidence (jaw exercises).
 6. Take into account photo quality, lighting, and camera angle when assessing features.
@@ -19,8 +19,8 @@ STRICT ENUM VALUE RULES (mandatory):
 RESPOND WITH EXACTLY THIS JSON STRUCTURE:
 
 {
-  "overall_score": <number 1-10>,
-  "potential_score": <number 1-10>,
+  "overall_score": <number 0-10>,
+  "potential_score": <number 0-10>,
   "facial_symmetry": {
     "score": <number 0-10>,
     "left_right_balance": <number 0-10>,

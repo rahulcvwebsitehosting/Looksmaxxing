@@ -54,6 +54,7 @@ export class NvidiaProvider implements VisionProvider {
       ],
       temperature: 0.4,
       max_tokens: 16384,
+      response_format: { type: "json_object" },
     };
 
     const controller = new AbortController();
