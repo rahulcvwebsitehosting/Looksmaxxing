@@ -33,7 +33,7 @@ export class OllamaProvider implements VisionProvider {
     }
   }
 
-  async analyze(imageBase64: string, mimeType: string): Promise<AnalysisResult> {
+  async analyze(imageBase64: string, mimeType: string, signal?: AbortSignal): Promise<AnalysisResult> {
     const apiKey = this.getApiKey();
     const baseUrl = this.getBaseUrl();
     const model = this.getModel();
@@ -61,6 +61,7 @@ export class OllamaProvider implements VisionProvider {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify(body),
+      signal,
     });
 
     if (!res.ok) {

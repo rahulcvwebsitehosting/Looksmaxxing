@@ -36,7 +36,7 @@ export class GeminiProvider implements VisionProvider {
     }
   }
 
-  async analyze(imageBase64: string, mimeType: string): Promise<AnalysisResult> {
+  async analyze(imageBase64: string, mimeType: string, signal?: AbortSignal): Promise<AnalysisResult> {
     const apiKey = this.getApiKey();
     const model = this.getModel();
     const prompt = buildAnalysisPrompt();
@@ -64,6 +64,7 @@ export class GeminiProvider implements VisionProvider {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
+      signal,
     });
 
     if (!res.ok) {

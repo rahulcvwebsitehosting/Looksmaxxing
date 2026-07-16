@@ -9,6 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function extractJsonFromResponse(raw: string): string {
   let cleaned = raw.trim();
+  cleaned = cleaned.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
   const jsonBlockMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
   if (jsonBlockMatch) {
     cleaned = jsonBlockMatch[1].trim();

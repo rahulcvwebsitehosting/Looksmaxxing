@@ -6,8 +6,8 @@ const facialFeatureSchema = z.object({
 });
 
 export const analysisResultSchema = z.object({
-  overall_score: z.number().min(1).max(10),
-  potential_score: z.number().min(1).max(10),
+  overall_score: z.number().min(0).max(10),
+  potential_score: z.number().min(0).max(10),
   facial_symmetry: z.object({
     score: z.number().min(0).max(10),
     left_right_balance: z.number().min(0).max(10),

@@ -39,17 +39,26 @@ export class ProviderRouter {
 
   async analyze(imageBase64: string, mimeType: string): Promise<{ result: AnalysisResult; providerUsed: string }> {
     for (const provider of this.providers) {
-      try {
-        const result = await provider.analyze(imageBase64, mimeType);
-        return { result, providerUsed: provider.name };
-      } catch (err) {
-        if (err instanceof ProviderError) {
-          console.warn(`[ProviderRouter] ${provider.name} failed: ${err.message}`);
-          continue;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 30_000);
+        try {
+          const result = await provider.analyze(imageBase64, mimeType, controller.signal);
+          clearTimeout(timeout);
+          return { result, providerUsed: provider.name };
+        } catch (err) {
+          clearTimeout(timeout);
+          if (err instanceof ProviderError) {
+            if (attempt === 0) {
+              console.warn(`[ProviderRouter] ${provider.name} failed (attempt ${attempt + 1}): ${err.message}, retrying...`);
+              continue;
+            }
+            console.warn(`[ProviderRouter] ${provider.name} failed: ${err.message}`);
+          } else {
+            console.warn(`[ProviderRouter] ${provider.name} failed with unexpected error:`, err);
+          }
+          break;
         }
-        // Non-provider error (e.g., Zod parsing failure): log and try next anyway
-        console.warn(`[ProviderRouter] ${provider.name} failed with unexpected error:`, err);
-        continue;
       }
     }
 
