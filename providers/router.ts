@@ -44,7 +44,7 @@ export class ProviderRouter {
     for (const provider of this.providers) {
       for (let attempt = 0; attempt < 2; attempt++) {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 30_000);
+        const timeout = setTimeout(() => controller.abort(), 20_000);
         try {
           const result = await provider.analyze(imageBase64, mimeType, controller.signal);
           clearTimeout(timeout);

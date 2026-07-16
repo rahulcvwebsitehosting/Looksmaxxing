@@ -7,16 +7,17 @@ import { toast } from "sonner";
 import { Loader2, Sparkles, CheckCircle, AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { motion, AnimatePresence } from "framer-motion";
 
 const LOADING_MESSAGES = [
-  "Preparing your image...",
-  "Analyzing facial features...",
-  "Evaluating symmetry...",
-  "Checking golden ratios...",
-  "Assessing skin quality...",
-  "Studying facial harmony...",
-  "Generating recommendations...",
-  "Compiling your report...",
+  "Waking up the AI models...",
+  "Gemini is scanning your facial symmetry...",
+  "Ollama is analyzing your features...",
+  "NVIDIA is evaluating your proportions...",
+  "AI models are collaborating on your rating...",
+  "Checking golden ratios across models...",
+  "Cross-referencing beauty benchmarks...",
+  "Compiling your personalized report...",
 ];
 
 export function AnalyzeButton() {
@@ -79,10 +80,14 @@ export function AnalyzeButton() {
       const blob = new Blob([byteArr], { type: "image/jpeg" });
       formData.append("image", blob, fileToSend.name || "photo.jpg");
 
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 120_000);
       const res = await fetch("/api/analyze", {
         method: "POST",
         body: formData,
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({ error: "Request failed" }));
@@ -99,7 +104,10 @@ export function AnalyzeButton() {
       setResult(data.result);
       toast.success("Analysis complete!");
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Analysis failed";
+      let msg = err instanceof Error ? err.message : "Analysis failed";
+      if (err instanceof DOMException && err.name === "AbortError") {
+        msg = "Request timed out. Our AI models are taking longer than expected — please try again.";
+      }
       setError(msg);
       setProgress(0);
       toast.error(msg);
@@ -107,25 +115,81 @@ export function AnalyzeButton() {
   }, [imageBase64, imageFile, setStatus, setProgress, setCurrentProvider, setResult, setError]);
 
   if (status === "analyzing") {
+    const provider = useAppStore.getState().currentProvider;
+    const models = [
+      { name: "Gemini", active: !provider || provider === "gemini" },
+      { name: "Ollama", active: provider === "ollama" },
+      { name: "NVIDIA", active: provider === "nvidia" },
+    ];
     return (
-      <Card className="w-full max-w-lg mx-auto border-violet-800/30">
+      <Card className="w-full max-w-lg mx-auto border-violet-800/30 overflow-hidden">
+        <div className="h-1 bg-zinc-800">
+          <motion.div
+            className="h-full bg-gradient-to-r from-violet-600 via-purple-500 to-pink-500"
+            initial={{ width: "0%" }}
+            animate={{ width: `${Math.min(useAppStore.getState().progress, 90)}%` }}
+            transition={{ duration: 0.5 }}
+          />
+        </div>
         <CardContent className="flex flex-col items-center gap-6 py-10">
-          <div className="relative">
-            <div className="w-20 h-20 rounded-full bg-violet-600/10 flex items-center justify-center">
-              <Loader2 className="w-10 h-10 text-violet-400 animate-spin" />
-            </div>
-            <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-violet-600/20 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-violet-300" />
-            </div>
+          <div className="flex items-center gap-3">
+            {models.map((model, i) => (
+              <motion.div
+                key={model.name}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{
+                  opacity: model.active ? 1 : 0.4,
+                  scale: model.active ? 1 : 0.85,
+                }}
+                transition={{ delay: i * 0.2, duration: 0.4 }}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium border ${
+                  model.active
+                    ? "bg-violet-600/20 border-violet-500/40 text-violet-300"
+                    : "bg-zinc-800/50 border-zinc-700/30 text-zinc-500"
+                }`}
+              >
+                {model.name}
+              </motion.div>
+            ))}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+            >
+              <Loader2 className="w-4 h-4 text-violet-400 animate-spin" />
+            </motion.div>
           </div>
+
+          <div className="relative">
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-violet-600/20 via-purple-600/10 to-pink-600/20 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-violet-600/10 flex items-center justify-center">
+                <Sparkles className="w-8 h-8 text-violet-300" />
+              </div>
+            </div>
+            <motion.div
+              className="absolute -inset-2 rounded-full border-2 border-violet-500/20"
+              animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.1, 0.3] }}
+              transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+            />
+          </div>
+
           <div className="text-center space-y-2 w-full">
-            <p className="text-base font-medium text-zinc-200">
-              {LOADING_MESSAGES[messageIdx]}
-            </p>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={messageIdx}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.3 }}
+                className="text-base font-medium text-zinc-200"
+              >
+                {LOADING_MESSAGES[messageIdx]}
+              </motion.p>
+            </AnimatePresence>
             <p className="text-xs text-zinc-500">
-              {useAppStore.getState().currentProvider
-                ? `Using ${useAppStore.getState().currentProvider}...`
-                : "Selecting best AI model..."}
+              {provider
+                ? `Analysis in progress...`
+                : "Waking up AI models..."}
             </p>
             <Progress
               value={useAppStore.getState().progress}
