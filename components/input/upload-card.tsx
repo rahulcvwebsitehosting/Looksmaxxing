@@ -15,7 +15,7 @@ export function UploadCard() {
 
   const handleFile = useCallback(
     async (file: File) => {
-      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"];
       if (!allowedTypes.includes(file.type)) {
         toast.error("Please upload a JPEG, PNG, or WebP image.");
         return;
@@ -109,7 +109,7 @@ export function UploadCard() {
         <input
           ref={inputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp"
+          accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
           className="hidden"
           onChange={handleFileInput}
         />

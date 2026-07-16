@@ -9,6 +9,13 @@ CRITICAL RULES:
 5. Distinguish between well-supported advice (skincare, grooming, photography, sleep) and ideas with limited scientific evidence (jaw exercises).
 6. Take into account photo quality, lighting, and camera angle when assessing features.
 
+STRICT ENUM VALUE RULES (mandatory):
+- Ensure all enum values for 'difficulty' are strictly lowercase 'easy', 'medium', or 'hard'.
+- Ensure all enum values for 'impact' are strictly lowercase 'low', 'medium', or 'high'.
+- Ensure all enum values for 'priority' are strictly lowercase 'low', 'medium', or 'high'.
+- Do NOT use capitalized variants like 'Easy', 'Medium', 'Hard', 'High', etc.
+- Do NOT use additional values outside of these three options.
+
 RESPOND WITH EXACTLY THIS JSON STRUCTURE:
 
 {
@@ -168,6 +175,9 @@ IMPORTANT NOTES FOR FILLING THE JSON:
 - beard_styles should suggest 3-5 beard styles or state "clean shaven" as best if appropriate.
 - Provide 3-5 glasses frame shape suggestions.
 - skin_care should have 3-6 actionable steps.
+- REMINDER: All 'difficulty' values MUST be 'easy', 'medium', or 'hard' (lowercase).
+- REMINDER: All 'impact' values MUST be 'low', 'medium', or 'high' (lowercase).
+- REMINDER: All 'priority' values MUST be 'low', 'medium', or 'high' (lowercase).
 
 Begin your JSON response now. Remember: ONLY the raw JSON object, nothing else.`;
 }

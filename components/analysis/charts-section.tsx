@@ -24,6 +24,13 @@ interface ChartsSectionProps {
   result: AnalysisResult;
 }
 
+function scoreToHex(score: number): string {
+  if (score >= 8) return "#10b981";
+  if (score >= 6) return "#3b82f6";
+  if (score >= 4) return "#f59e0b";
+  return "#ef4444";
+}
+
 const RADAR_DATA = (result: AnalysisResult) => [
   { feature: "Symmetry", value: result.facial_symmetry.score },
   { feature: "Jawline", value: result.jawline.score },
@@ -106,7 +113,7 @@ export function ChartsSection({ result }: ChartsSectionProps) {
                 {MASC_FEM_DATA(result).map((entry, idx) => (
                   <Cell
                     key={idx}
-                    fill={entry.name === "Masculine" ? "#6366f1" : "#ec4899"}
+                    fill={scoreToHex(entry.value)}
                     fillOpacity={0.8}
                   />
                 ))}
