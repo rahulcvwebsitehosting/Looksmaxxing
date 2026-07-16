@@ -5,6 +5,8 @@ import type { VisionProvider } from "./types";
 import type { AnalysisResult } from "@/types";
 import { ProviderError } from "./gemini";
 
+const REQUEST_TIMEOUT_MS = 12_000;
+
 export class NvidiaProvider implements VisionProvider {
   readonly name = "nvidia";
 
@@ -51,39 +53,55 @@ export class NvidiaProvider implements VisionProvider {
         },
       ],
       temperature: 0.4,
-      max_tokens: 8192,
+      max_tokens: 16384,
     };
 
-    const res = await fetch(`${baseUrl}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify(body),
-      signal,
-    });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
-    if (!res.ok) {
-      const errorText = await res.text().catch(() => "");
-      if (res.status === 429) {
-        throw new ProviderError("NVIDIA: Rate limit exceeded", res.status);
-      }
-      if (res.status === 500 || res.status === 503) {
-        throw new ProviderError("NVIDIA: Server error", res.status);
-      }
-      throw new ProviderError(`NVIDIA: HTTP ${res.status} - ${errorText.substring(0, 200)}`, res.status);
+    if (signal) {
+      signal.addEventListener("abort", () => controller.abort(), { once: true });
     }
 
-    const data = await res.json();
-    const rawText = data?.choices?.[0]?.message?.content;
+    try {
+      const res = await fetch(`${baseUrl}/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
 
-    if (!rawText) {
-      throw new ProviderError("NVIDIA: No text in response", 500);
+      if (!res.ok) {
+        const errorText = await res.text().catch(() => "");
+        if (res.status === 429) {
+          throw new ProviderError("NVIDIA: Rate limit exceeded", res.status);
+        }
+        if (res.status === 500 || res.status === 503) {
+          throw new ProviderError("NVIDIA: Server error", res.status);
+        }
+        throw new ProviderError(`NVIDIA: HTTP ${res.status} - ${errorText.substring(0, 200)}`, res.status);
+      }
+
+      const data = await res.json();
+      const rawText = data?.choices?.[0]?.message?.content;
+
+      if (!rawText) {
+        throw new ProviderError("NVIDIA: No text in response", 500);
+      }
+
+      const jsonStr = extractJsonFromResponse(rawText);
+      const parsed = JSON.parse(jsonStr);
+      return analysisResultSchema.parse(parsed);
+    } catch (err) {
+      if (controller.signal.aborted) {
+        throw new ProviderError("NVIDIA: Request timed out", 504);
+      }
+      throw err;
+    } finally {
+      clearTimeout(timeout);
     }
-
-    const jsonStr = extractJsonFromResponse(rawText);
-    const parsed = JSON.parse(jsonStr);
-    return analysisResultSchema.parse(parsed);
   }
 }

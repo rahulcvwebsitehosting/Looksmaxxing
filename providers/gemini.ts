@@ -4,6 +4,8 @@ import { extractJsonFromResponse } from "@/lib/index";
 import type { VisionProvider } from "./types";
 import type { AnalysisResult } from "@/types";
 
+const REQUEST_TIMEOUT_MS = 12_000;
+
 export class GeminiProvider implements VisionProvider {
   readonly name = "gemini";
 
@@ -56,38 +58,55 @@ export class GeminiProvider implements VisionProvider {
         temperature: 0.4,
         topP: 0.95,
         topK: 40,
-        maxOutputTokens: 8192,
+        maxOutputTokens: 16384,
+        responseMimeType: "application/json",
       },
     };
 
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      signal,
-    });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
-    if (!res.ok) {
-      const errorText = await res.text().catch(() => "");
-      if (res.status === 429) {
-        throw new ProviderError("Gemini: Rate limit exceeded", res.status);
-      }
-      if (res.status === 500 || res.status === 503) {
-        throw new ProviderError("Gemini: Server error", res.status);
-      }
-      throw new ProviderError(`Gemini: HTTP ${res.status} - ${errorText.substring(0, 200)}`, res.status);
+    if (signal) {
+      signal.addEventListener("abort", () => controller.abort(), { once: true });
     }
 
-    const data = await res.json();
-    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
 
-    if (!rawText) {
-      throw new ProviderError("Gemini: No text in response", 500);
+      if (!res.ok) {
+        const errorText = await res.text().catch(() => "");
+        if (res.status === 429) {
+          throw new ProviderError("Gemini: Rate limit exceeded", res.status);
+        }
+        if (res.status === 500 || res.status === 503) {
+          throw new ProviderError("Gemini: Server error", res.status);
+        }
+        throw new ProviderError(`Gemini: HTTP ${res.status} - ${errorText.substring(0, 200)}`, res.status);
+      }
+
+      const data = await res.json();
+      const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+      if (!rawText) {
+        throw new ProviderError("Gemini: No text in response", 500);
+      }
+
+      const jsonStr = extractJsonFromResponse(rawText);
+      const parsed = JSON.parse(jsonStr);
+      return analysisResultSchema.parse(parsed);
+    } catch (err) {
+      if (controller.signal.aborted) {
+        throw new ProviderError("Gemini: Request timed out", 504);
+      }
+      throw err;
+    } finally {
+      clearTimeout(timeout);
     }
-
-    const jsonStr = extractJsonFromResponse(rawText);
-    const parsed = JSON.parse(jsonStr);
-    return analysisResultSchema.parse(parsed);
   }
 }
 

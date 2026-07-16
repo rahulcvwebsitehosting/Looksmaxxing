@@ -4,6 +4,9 @@ import { GeminiProvider, ProviderError } from "./gemini";
 import { OllamaProvider } from "./ollama";
 import { NvidiaProvider } from "./nvidia";
 
+const RETRIABLE_STATUS_CODES = new Set([429, 500]);
+const RETRY_DELAY_MS = 1_000;
+
 export class ProviderRouter {
   private providers: VisionProvider[] = [];
 
@@ -49,8 +52,10 @@ export class ProviderRouter {
         } catch (err) {
           clearTimeout(timeout);
           if (err instanceof ProviderError) {
-            if (attempt === 0) {
-              console.warn(`[ProviderRouter] ${provider.name} failed (attempt ${attempt + 1}): ${err.message}, retrying...`);
+            const shouldRetry = attempt === 0 && RETRIABLE_STATUS_CODES.has(err.statusCode);
+            if (shouldRetry) {
+              console.warn(`[ProviderRouter] ${provider.name} failed with ${err.statusCode} (attempt ${attempt + 1}): ${err.message}, retrying in ${RETRY_DELAY_MS}ms...`);
+              await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
               continue;
             }
             console.warn(`[ProviderRouter] ${provider.name} failed: ${err.message}`);

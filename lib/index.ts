@@ -8,22 +8,53 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function extractJsonFromResponse(raw: string): string {
-  let cleaned = raw.trim();
-  cleaned = cleaned.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
-  const jsonBlockMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-  if (jsonBlockMatch) {
-    cleaned = jsonBlockMatch[1].trim();
+  const cleaned = raw
+    .replace(/<think[\s\S]*?<\/think>/gi, "")
+    .replace(/<thinking[\s\S]*?<\/thinking>/gi, "")
+    .trim();
+
+  const objects: string[] = [];
+
+  for (let i = 0; i < cleaned.length; i++) {
+    if (cleaned[i] !== "{") continue;
+
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+
+    for (let j = i; j < cleaned.length; j++) {
+      const char = cleaned[j];
+
+      if (escape) {
+        escape = false;
+      } else if (char === "\\") {
+        escape = true;
+      } else if (char === '"') {
+        inString = !inString;
+      } else if (!inString) {
+        if (char === "{") {
+          depth++;
+        } else if (char === "}") {
+          depth--;
+          if (depth === 0) {
+            objects.push(cleaned.slice(i, j + 1));
+            break;
+          }
+        }
+      }
+    }
   }
-  const braceStart = cleaned.indexOf("{");
-  const braceEnd = cleaned.lastIndexOf("}");
-  const bracketStart = cleaned.indexOf("[");
-  const bracketEnd = cleaned.lastIndexOf("]");
-  if (braceStart !== -1 && braceEnd > braceStart) {
-    cleaned = cleaned.substring(braceStart, braceEnd + 1);
-  } else if (bracketStart !== -1 && bracketEnd > bracketStart) {
-    cleaned = cleaned.substring(bracketStart, bracketEnd + 1);
+
+  for (let k = objects.length - 1; k >= 0; k--) {
+    try {
+      JSON.parse(objects[k]);
+      return objects[k];
+    } catch {
+      // Not valid JSON, keep searching backwards
+    }
   }
-  return cleaned;
+
+  throw new Error("No valid JSON object found in response");
 }
 
 export function formatConfidence(value: number): string {
