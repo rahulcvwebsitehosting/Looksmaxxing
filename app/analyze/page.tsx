@@ -108,7 +108,7 @@ function AnalyzePage() {
           )}
 
           {/* Show appropriate input card */}
-          {searchParams.get("camera") === "true" && !imageBase64 ? (
+          {searchParams.get("camera") === "true" ? (
             <CameraCard />
           ) : (
             <UploadCard />

@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 
 interface UseCameraOptions {
   onCapture: (base64: string) => void;
@@ -30,15 +30,11 @@ export function useCamera({ onCapture }: UseCameraOptions) {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode,
-          width: { ideal: 1920 },
-          height: { ideal: 1080 },
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
         },
       });
       streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-      }
       setIsActive(true);
     } catch (err) {
       const msg =
@@ -48,33 +44,37 @@ export function useCamera({ onCapture }: UseCameraOptions) {
     }
   }, [facingMode]);
 
+  useEffect(() => {
+    if (!isActive) return;
+    const video = videoRef.current;
+    const stream = streamRef.current;
+    if (video && stream && video.srcObject !== stream) {
+      video.srcObject = stream;
+      video.play().catch(() => {});
+    }
+  }, [isActive]);
+
   const switchCamera = useCallback(async () => {
     stopCamera();
     const newMode = facingMode === "user" ? "environment" : "user";
     setFacingMode(newMode);
-    // Wait for state propagation then start
-    setTimeout(async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: newMode,
-            width: { ideal: 1920 },
-            height: { ideal: 1080 },
-          },
-        });
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-        }
-        setIsActive(true);
-        setFacingMode(newMode);
-      } catch (err) {
-        const msg =
-          err instanceof Error ? err.message : "Camera switch failed";
-        setError(msg);
-      }
-    }, 100);
+    // Wait for state to propagate before re-acquiring stream
+    await new Promise((r) => setTimeout(r, 50));
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: newMode,
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+        },
+      });
+      streamRef.current = stream;
+      setIsActive(true);
+    } catch (err) {
+      const msg =
+        err instanceof Error ? err.message : "Camera switch failed";
+      setError(msg);
+    }
   }, [facingMode, stopCamera]);
 
   const takePhoto = useCallback(() => {
@@ -97,7 +97,6 @@ export function useCamera({ onCapture }: UseCameraOptions) {
         canvas.height = video.videoHeight;
         const ctx = canvas.getContext("2d")!;
 
-        // Mirror for front camera
         if (facingMode === "user") {
           ctx.translate(canvas.width, 0);
           ctx.scale(-1, 1);
@@ -105,7 +104,6 @@ export function useCamera({ onCapture }: UseCameraOptions) {
 
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        // Compress
         const MAX_EDGE = 1024;
         let { width, height } = canvas;
         if (width > MAX_EDGE || height > MAX_EDGE) {
