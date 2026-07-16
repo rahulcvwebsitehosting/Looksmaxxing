@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppStore } from "@/hooks/store";
+import { Button } from "@/components/ui/button";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Loader2, Sparkles, CheckCircle, AlertCircle } from "lucide-react";
@@ -169,6 +170,3 @@ export function AnalyzeButton() {
     </Button>
   );
 }
-
-// Need to import Button here
-import { Button } from "@/components/ui/button";

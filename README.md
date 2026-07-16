@@ -18,7 +18,7 @@ provider failover.
 - **Robust LLM Parsing** — Markdown-stripping regex + Zod validation on every response.
 - **Rich Dashboard** — Score rings, Recharts radar & bar charts, expandable recommendations, skincare routines, hair/beard/glasses suggestions, JSON export.
 - **Privacy First** — No database, no auth, no stored images. Server-controlled prompts prevent prompt injection from image metadata.
-- **Modern UI** — Next.js 15 App Router, TailwindCSS, Framer Motion, Sonner toasts, Zustand state.
+- **Modern UI** — Next.js 16 App Router, TailwindCSS, Framer Motion, Sonner toasts, Zustand state.
 
 ---
 
@@ -26,7 +26,7 @@ provider failover.
 
 | Layer | Technology |
 |-------|------------|
-| Framework | Next.js 15 (App Router) |
+| Framework | Next.js 16 (App Router) |
 | Language | TypeScript |
 | Styling | TailwindCSS |
 | UI | shadcn-style components, Lucide icons |
@@ -91,7 +91,7 @@ GEMINI_MODEL=gemini-2.5-flash
 # Ollama Cloud (Fallback)
 OLLAMA_API_KEY=
 OLLAMA_BASE_URL=https://ollama.com/v1
-OLLAMA_MODEL=minimax-m3
+OLLAMA_MODEL=minimax-m3:cloud
 
 # NVIDIA NIM (Final fallback)
 NVIDIA_API_KEY=
