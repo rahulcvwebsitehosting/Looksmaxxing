@@ -10,7 +10,7 @@ interface ScoreCardsProps {
   result: AnalysisResult;
 }
 
-function ScoreRing({ score, label, size = "lg" }: { score: number; label: string; size?: "sm" | "lg" }) {
+function ScoreRing({ score, label, size = "lg" }: { score: number; label?: string; size?: "sm" | "lg" }) {
   const dims = size === "lg" ? "w-28 h-28" : "w-20 h-20";
   const txtSize = size === "lg" ? "text-3xl" : "text-xl";
   const strokeWidth = size === "lg" ? 6 : 5;

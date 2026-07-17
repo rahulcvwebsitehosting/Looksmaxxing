@@ -26,6 +26,7 @@ export function AnalyzeButton() {
     imageFile,
     status,
     progress,
+    currentProvider,
     setStatus,
     setProgress,
     setCurrentProvider,
