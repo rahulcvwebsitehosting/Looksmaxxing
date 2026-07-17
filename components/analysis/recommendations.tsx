@@ -1,25 +1,19 @@
 "use client";
 
 import { type AnalysisResult } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { cn, difficultyColor } from "@/lib/index";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn, difficultyColor, scoreToColor } from "@/lib/index";
 import {
   ThumbsUp,
   AlertCircle,
   Sparkles,
   Scissors,
   Shirt,
-  Beaker,
   Dumbbell,
-  Moon,
-  Sun,
-  Camera,
-  Smile,
   Eye,
   Droplets,
   ChevronDown,
   ChevronUp,
-  ShieldQuestion,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -305,6 +299,3 @@ export function Recommendations({ result }: RecommendationsProps) {
   );
 }
 
-function scoreToColor(score: number) {
-  return score >= 8 ? "text-emerald-400" : score >= 6 ? "text-blue-400" : score >= 4 ? "text-amber-400" : "text-red-400";
-}

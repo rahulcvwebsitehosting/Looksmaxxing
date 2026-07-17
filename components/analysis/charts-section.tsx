@@ -17,7 +17,6 @@ import {
   Tooltip,
   Cell,
 } from "recharts";
-import { scoreToColor } from "@/lib/index";
 import { Sparkles } from "lucide-react";
 
 interface ChartsSectionProps {

@@ -1,9 +1,6 @@
 import { z } from "zod";
 
-const facialFeatureSchema = z.object({
-  score: z.number().min(0).max(10),
-  description: z.string(),
-});
+
 
 export const analysisResultSchema = z.object({
   overall_score: z.number().min(0).max(10),

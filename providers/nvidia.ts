@@ -10,6 +10,12 @@ const REQUEST_TIMEOUT_MS = 12_000;
 export class NvidiaProvider implements VisionProvider {
   readonly name = "nvidia";
 
+  constructor() {
+    if (!process.env.NVIDIA_API_KEY) {
+      throw new Error("NVIDIA_API_KEY is not configured");
+    }
+  }
+
   private getApiKey(): string {
     const key = process.env.NVIDIA_API_KEY;
     if (!key) throw new Error("NVIDIA_API_KEY is not configured");

@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, RefreshCw, X, FlipHorizontal } from "lucide-react";
+import { Camera, X, FlipHorizontal } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useCamera } from "@/hooks/useCamera";

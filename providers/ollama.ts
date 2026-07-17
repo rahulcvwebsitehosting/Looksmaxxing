@@ -10,6 +10,12 @@ const REQUEST_TIMEOUT_MS = 12_000;
 export class OllamaProvider implements VisionProvider {
   readonly name = "ollama";
 
+  constructor() {
+    if (!process.env.OLLAMA_API_KEY) {
+      throw new Error("OLLAMA_API_KEY is not configured");
+    }
+  }
+
   private getApiKey(): string {
     const key = process.env.OLLAMA_API_KEY;
     if (!key) throw new Error("OLLAMA_API_KEY is not configured");

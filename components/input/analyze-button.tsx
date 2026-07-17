@@ -4,7 +4,7 @@ import { useAppStore } from "@/hooks/store";
 import { Button } from "@/components/ui/button";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Loader2, Sparkles, CheckCircle, AlertCircle } from "lucide-react";
+import { Loader2, Sparkles, AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,6 +25,7 @@ export function AnalyzeButton() {
     imageBase64,
     imageFile,
     status,
+    progress,
     setStatus,
     setProgress,
     setCurrentProvider,
@@ -36,14 +37,14 @@ export function AnalyzeButton() {
 
   const [messageIdx, setMessageIdx] = useState(0);
   const intervalRef = useRef<number | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (status === "analyzing" && intervalRef.current === null) {
       intervalRef.current = window.setInterval(() => {
         setMessageIdx((prev) => (prev + 1) % LOADING_MESSAGES.length);
-        useAppStore.getState().setProgress(
-          Math.min(useAppStore.getState().progress + 8, 90)
-        );
+        setProgress(Math.min(progress + 8, 90));
       }, 1200);
     }
     if (status !== "analyzing" && intervalRef.current !== null) {
@@ -52,6 +53,8 @@ export function AnalyzeButton() {
     }
     return () => {
       if (intervalRef.current !== null) clearInterval(intervalRef.current);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (abortControllerRef.current) abortControllerRef.current.abort();
     };
   }, [status]);
 
@@ -67,6 +70,11 @@ export function AnalyzeButton() {
     setError(null);
     setResult(null);
 
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+      const timeout = setTimeout(() => controller.abort(), 120_000);
+      timeoutRef.current = timeout;
+
     try {
       const fileToSend = imageFile || new File([], "capture.jpg", { type: "image/jpeg" });
 
@@ -80,14 +88,11 @@ export function AnalyzeButton() {
       const blob = new Blob([byteArr], { type: "image/jpeg" });
       formData.append("image", blob, fileToSend.name || "photo.jpg");
 
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 120_000);
       const res = await fetch("/api/analyze", {
         method: "POST",
         body: formData,
         signal: controller.signal,
       });
-      clearTimeout(timeout);
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({ error: "Request failed" }));
@@ -108,18 +113,23 @@ export function AnalyzeButton() {
       if (err instanceof DOMException && err.name === "AbortError") {
         msg = "Request timed out. Our AI models are taking longer than expected — please try again.";
       }
-      setError(msg);
-      setProgress(0);
-      toast.error(msg);
-    }
+       setError(msg);
+       setProgress(0);
+       toast.error(msg);
+     }
+
+     // Cleanup on completion/error
+     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+     abortControllerRef.current = null;
+     timeoutRef.current = null;
   }, [imageBase64, imageFile, setStatus, setProgress, setCurrentProvider, setResult, setError]);
 
   if (status === "analyzing") {
-    const provider = useAppStore.getState().currentProvider;
+
     const models = [
-      { name: "Gemini", active: !provider || provider === "gemini" },
-      { name: "Ollama", active: provider === "ollama" },
-      { name: "NVIDIA", active: provider === "nvidia" },
+      { name: "Gemini", active: !useAppStore.getState().currentProvider || useAppStore.getState().currentProvider === "gemini" },
+      { name: "Ollama", active: useAppStore.getState().currentProvider === "ollama" },
+      { name: "NVIDIA", active: useAppStore.getState().currentProvider === "nvidia" },
     ];
     return (
       <Card className="w-full max-w-lg mx-auto border-violet-800/30 overflow-hidden">
@@ -127,7 +137,7 @@ export function AnalyzeButton() {
           <motion.div
             className="h-full bg-gradient-to-r from-violet-600 via-purple-500 to-pink-500"
             initial={{ width: "0%" }}
-            animate={{ width: `${Math.min(useAppStore.getState().progress, 90)}%` }}
+            animate={{ width: `${Math.min(progress, 90)}%` }}
             transition={{ duration: 0.5 }}
           />
         </div>
@@ -187,12 +197,12 @@ export function AnalyzeButton() {
               </motion.p>
             </AnimatePresence>
             <p className="text-xs text-zinc-500">
-              {provider
-                ? `Analysis in progress...`
-                : "Waking up AI models..."}
+               {useAppStore.getState().currentProvider
+                 ? `Analysis in progress...`
+                 : "Waking up AI models..."}
             </p>
             <Progress
-              value={useAppStore.getState().progress}
+              value={progress}
               className="mt-2"
             />
           </div>

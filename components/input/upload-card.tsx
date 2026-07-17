@@ -1,13 +1,12 @@
 "use client";
 
 import { useCallback, useRef } from "react";
-import { Upload, ImageIcon } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Upload } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/hooks/store";
 import { compressImage } from "@/hooks/useImageCompression";
 import { toast } from "sonner";
-import { formatConfidence } from "@/lib/index";
 
 export function UploadCard() {
   const inputRef = useRef<HTMLInputElement>(null);

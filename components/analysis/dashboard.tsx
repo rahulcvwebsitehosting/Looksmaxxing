@@ -4,17 +4,15 @@ import { useAppStore } from "@/hooks/store";
 import { ScoreCards } from "./score-cards";
 import { ChartsSection } from "./charts-section";
 import { Recommendations } from "./recommendations";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Download,
-  RefreshCw,
   ArrowLeft,
   Sparkles,
-  Clock,
   User,
+  Clock,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export function Dashboard() {
   const { result, currentProvider, reset, imageBase64 } = useAppStore();
@@ -33,13 +31,12 @@ export function Dashboard() {
   };
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="space-y-8 max-w-5xl mx-auto"
-      >
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="space-y-8 max-w-5xl mx-auto"
+    >
         {/* Top bar */}
         <div className="flex flex-wrap items-center justify-between gap-4">
           <Button
@@ -107,7 +104,6 @@ export function Dashboard() {
 
         {/* Recommendations */}
         <Recommendations result={result} />
-      </motion.div>
-    </AnimatePresence>
+    </motion.div>
   );
 }

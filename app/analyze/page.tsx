@@ -11,7 +11,6 @@ import { AnalyzeButton } from "@/components/input/analyze-button";
 import { Dashboard } from "@/components/analysis/dashboard";
 import { useAppStore } from "@/hooks/store";
 import Link from "next/link";
-import { toast } from "sonner";
 
 function AnalyzePage() {
   const searchParams = useSearchParams();

@@ -9,6 +9,12 @@ const REQUEST_TIMEOUT_MS = 12_000;
 export class GeminiProvider implements VisionProvider {
   readonly name = "gemini";
 
+  constructor() {
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error("GEMINI_API_KEY is not configured");
+    }
+  }
+
   private getApiKey(): string {
     const key = process.env.GEMINI_API_KEY;
     if (!key) throw new Error("GEMINI_API_KEY is not configured");
