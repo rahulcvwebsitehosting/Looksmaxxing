@@ -51,31 +51,31 @@ export function ChartsSection({ result }: ChartsSectionProps) {
     <div className="grid gap-4 md:grid-cols-2">
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-ink-300 flex items-center gap-2 font-mono">
-            <Sparkles className="w-4 h-4 text-brand-400" />
+          <CardTitle className="text-sm font-medium text-ink-soft flex items-center gap-2 font-mono">
+            <Sparkles className="w-4 h-4 text-accent-600" />
             Facial Features Radar
           </CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <RadarChart data={RADAR_DATA(result)}>
-              <PolarGrid stroke="rgba(255,255,255,0.08)" />
+              <PolarGrid stroke="#e6e8ec" />
               <PolarAngleAxis
                 dataKey="feature"
-                tick={{ fill: "#8a8f98", fontSize: 11 }}
+                tick={{ fill: "#64748b", fontSize: 11 }}
               />
               <PolarRadiusAxis
                 angle={90}
                 domain={[0, 10]}
-                tick={{ fill: "#6b7079", fontSize: 10 }}
-                stroke="rgba(255,255,255,0.08)"
+                tick={{ fill: "#94a3b8", fontSize: 10 }}
+                stroke="#e6e8ec"
               />
               <Radar
                 name="Score"
                 dataKey="value"
-                stroke="#a78bfa"
-                fill="#a78bfa"
-                fillOpacity={0.25}
+                stroke="#2563eb"
+                fill="#2563eb"
+                fillOpacity={0.18}
                 strokeWidth={2}
               />
             </RadarChart>
@@ -85,28 +85,28 @@ export function ChartsSection({ result }: ChartsSectionProps) {
 
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-ink-300 flex items-center gap-2 font-mono">
-            <Sparkles className="w-4 h-4 text-brand-400" />
+          <CardTitle className="text-sm font-medium text-ink-soft flex items-center gap-2 font-mono">
+            <Sparkles className="w-4 h-4 text-accent-600" />
             Masculine / Feminine Traits
           </CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={MASC_FEM_DATA(result)} barCategoryGap="40%">
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#eef0f3" />
               <XAxis
                 dataKey="name"
-                tick={{ fill: "#c9cad2", fontSize: 12 }}
-                stroke="rgba(255,255,255,0.08)"
+                tick={{ fill: "#334155", fontSize: 12 }}
+                stroke="#e6e8ec"
               />
-              <YAxis domain={[0, 10]} tick={{ fill: "#8a8f98", fontSize: 11 }} stroke="rgba(255,255,255,0.08)" />
+              <YAxis domain={[0, 10]} tick={{ fill: "#64748b", fontSize: 11 }} stroke="#e6e8ec" />
               <Tooltip
-                cursor={{ fill: "rgba(255,255,255,0.04)" }}
+                cursor={{ fill: "rgba(37,99,235,0.06)" }}
                 contentStyle={{
-                  backgroundColor: "#0a0a0f",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  backgroundColor: "#ffffff",
+                  border: "1px solid #e6e8ec",
                   borderRadius: "12px",
-                  color: "#ededef",
+                  color: "#0f172a",
                 }}
               />
               <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={60}>
@@ -121,8 +121,8 @@ export function ChartsSection({ result }: ChartsSectionProps) {
             </BarChart>
           </ResponsiveContainer>
           <div className="mt-3 space-y-2">
-            <p className="text-xs text-ink-400">{result.masculinity.description}</p>
-            <p className="text-xs text-ink-400">{result.femininity.description}</p>
+            <p className="text-xs text-ink-muted">{result.masculinity.description}</p>
+            <p className="text-xs text-ink-muted">{result.femininity.description}</p>
           </div>
         </CardContent>
       </Card>

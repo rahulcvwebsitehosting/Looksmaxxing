@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Lexend, Source_Sans_3, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const lexend = Lexend({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
+const sourceSans = Source_Sans_3({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
@@ -42,19 +42,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${lexend.variable} ${sourceSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-ink-950 text-ink-100 font-sans">
+      <body className="min-h-full flex flex-col bg-surface text-ink font-sans">
         <Toaster
           position="top-center"
           richColors
           closeButton
-          theme="dark"
+          theme="light"
           toastOptions={{
             style: {
-              background: "#0a0a0f",
-              border: "1px solid rgba(255,255,255,0.08)",
-              color: "#ededef",
+              background: "#ffffff",
+              border: "1px solid #e6e8ec",
+              color: "#0f172a",
               fontFamily: "var(--font-sans)",
             },
           }}

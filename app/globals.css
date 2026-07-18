@@ -1,153 +1,121 @@
 @import "tailwindcss";
 
 /*
-  LooksMax AI — Merged Design System
+  LooksMax AI — Clean Professional Redesign
   ==================================================
-  Sources (from UI UX Pro Max skill):
-    • Soft UI Evolution   → improved contrast, soft layered shadows, WCAG AA+, 200–300ms
-    • Bento Box Grid      → modular card grids, Apple-style surfaces
-    • Glassmorphism       → frosted header / overlays, backdrop-blur
-    • Modern Dark Cinema  → no pure #000, elevated surfaces, hairline rgba borders, ambient blobs
-    • Dimensional Layering→ elevation shadow scale (4 levels)
-    • AI-Native UI        → refined indigo/violet accent
-    • Reasoning engine rec→ Space Grotesk / DM Sans, AI purple #7C3AED + pink #EC4899
+  Source themes (from UI UX Pro Max skill), deliberately AVOIDING the
+  "AI purple/pink gradient" anti-pattern:
+    • Swiss Modernism 2.0 → strict grid, mathematical spacing, single accent, high contrast
+    • Trust & Authority     → professional, restrained, blue/grey, WCAG AAA
+    • Minimal & Direct      → whitespace-heavy, clean typography, no decoration
+    • Bento Box Grid        → subtle neutral cards (kept, but matte/lighter)
+
+  No glow, no gradients-on-text, no neon. Matte, light, human.
 */
 
 @theme inline {
-  /* Base surfaces — cinema-style dark, avoid pure black */
-  --color-ink-50: #f6f6f9;
-  --color-ink-100: #ededef;
-  --color-ink-200: #c9cad2;
-  --color-ink-300: #8a8f98;
-  --color-ink-400: #6b7079;
-  --color-ink-500: #4a4e57;
-  --color-ink-600: #2a2d35;
-  --color-ink-700: #181a20;
-  --color-ink-800: #0f1014;
-  --color-ink-900: #08090c;
-  --color-ink-950: #050506;
+  /* Neutral ink / surface scale (clean editorial light) */
+  --color-ink: #0f172a;
+  --color-ink-soft: #334155;
+  --color-ink-muted: #64748b;
+  --color-ink-faint: #94a3b8;
+  --color-line: #e6e8ec;
+  --color-line-soft: #f1f3f5;
+  --color-surface: #ffffff;
+  --color-surface-2: #f8fafc;
+  --color-surface-3: #f1f5f9;
 
-  /* Primary accent — AI violet (reasoning rec) */
-  --color-brand-50: #f5f3ff;
-  --color-brand-100: #ede9fe;
-  --color-brand-200: #ddd6fe;
-  --color-brand-300: #c4b5fd;
-  --color-brand-400: #a78bfa;
-  --color-brand-500: #8b5cf6;
-  --color-brand-600: #7c3aed;
-  --color-brand-700: #6d28d9;
-  --color-brand-800: #5b21b6;
-  --color-brand-900: #4c1d95;
+  /* Single restrained accent — trustworthy slate-blue (no purple/pink) */
+  --color-accent-50: #eff6ff;
+  --color-accent-100: #dbeafe;
+  --color-accent-200: #bfdbfe;
+  --color-accent-300: #93c5fd;
+  --color-accent-400: #60a5fa;
+  --color-accent-500: #3b82f6;
+  --color-accent-600: #2563eb;
+  --color-accent-700: #1d4ed8;
+  --color-accent-800: #1e40af;
 
-  /* Secondary — indigo (AI-native, dimensional layering accent) */
-  --color-iris-400: #818cf8;
-  --color-iris-500: #6366f1;
-  --color-iris-600: #5e6ad2;
+  /* Warm neutral for the "human" photo/result accent */
+  --color-stone-400: #a8a29e;
+  --color-stone-500: #78716c;
 
-  /* Accent / CTA — generation pink (reasoning rec) */
-  --color-flush-400: #f472b6;
-  --color-flush-500: #ec4899;
-  --color-flush-600: #db2777;
-
-  /* Status — keep semantic */
-  --color-emerald-400: #34d399;
+  /* Status — muted, professional */
   --color-emerald-500: #10b981;
-  --color-amber-400: #fbbf24;
+  --color-emerald-600: #059669;
   --color-amber-500: #f59e0b;
-  --color-red-400: #f87171;
+  --color-amber-600: #d97706;
   --color-red-500: #ef4444;
-  --color-blue-400: #60a5fa;
-  --color-blue-500: #3b82f6;
+  --color-red-600: #dc2626;
+  --color-sky-500: #0ea5e9;
 
   /* Fonts */
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
 
-  /* Elevation shadow scale (Dimensional Layering) — tuned for dark */
-  --shadow-e1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-e2: 0 4px 8px rgba(0, 0, 0, 0.45), 0 2px 4px rgba(0, 0, 0, 0.3);
-  --shadow-e3: 0 12px 24px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.35);
-  --shadow-e4: 0 24px 48px rgba(0, 0, 0, 0.55), 0 8px 16px rgba(0, 0, 0, 0.4);
-
-  /* Soft UI Evolution — better-than-flat layered soft shadow */
-  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.25);
-  --shadow-glow: 0 8px 32px rgba(124, 58, 237, 0.25);
-
-  /* Hairline border (Modern Dark Cinema) */
-  --border-hairline: 1px solid rgba(255, 255, 255, 0.08);
+  /* Soft, matte elevation (very subtle, no colored glow) */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 2px 4px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 6px 16px rgba(15, 23, 42, 0.06), 0 12px 28px rgba(15, 23, 42, 0.06);
 }
 
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: #050506;
-  color: #ededef;
-  font-family: var(--font-sans), DM Sans, Inter, system-ui, sans-serif;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: var(--font-sans), "Source Sans 3", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.011em;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: rgba(124, 58, 237, 0.35);
-  color: #fafafa;
+  background: rgba(37, 99, 235, 0.16);
+  color: #0f172a;
 }
 
-/* Display font helper for hero/headings — Space Grotesk */
+/* Display font helper — Lexend */
 .font-display {
-  font-family: var(--font-display), Space Grotesk, system-ui, sans-serif;
-  letter-spacing: -0.025em;
+  font-family: var(--font-display), "Lexend", system-ui, sans-serif;
+  letter-spacing: -0.02em;
 }
 
 /* Mono helper for data labels — JetBrains Mono */
 .font-mono {
-  font-family: var(--font-mono), JetBrains Mono, ui-monospace, monospace;
+  font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
 }
 
-/* ---------- Glassmorphism utilities ---------- */
-.glass {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* ---------- Subtle surface cards (matte, no glow) ---------- */
+.surface-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-sm);
 }
 
-.glass-strong {
-  background: rgba(10, 10, 15, 0.72);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+/* ---------- Soft accent tint block (no gradient text) ---------- */
+.accent-soft {
+  background: var(--color-accent-50);
+  border: 1px solid var(--color-accent-100);
+  color: var(--color-accent-700);
 }
 
-/* ---------- Elevation helpers ---------- */
-.elevation-1 { box-shadow: var(--shadow-e1); }
-.elevation-2 { box-shadow: var(--shadow-e2); }
-.elevation-3 { box-shadow: var(--shadow-e3); }
-.elevation-4 { box-shadow: var(--shadow-e4); }
-.shadow-soft { box-shadow: var(--shadow-soft); }
-.shadow-glow { box-shadow: var(--shadow-glow); }
-
-/* ---------- Gradient text helper (reasoning accents) ---------- */
-.text-gradient-brand {
-  background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+/* Section eyebrow / label */
+.eyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
 }
 
-.bg-mesh-brand {
-  background-image:
-    radial-gradient(at 20% 20%, rgba(124, 58, 237, 0.18) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(94, 106, 210, 0.14) 0px, transparent 50%);
-}
-
-/* ---------- Animations ---------- */
+/* ---------- Animations (calm, professional) ---------- */
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -163,26 +131,9 @@ body {
   50% { opacity: 0.8; transform: scale(1.05); }
 }
 
-@keyframes accordion-down {
-  from { height: 0; }
-  to { height: var(--radix-accordion-content-height); }
-}
-
-@keyframes accordion-up {
-  from { height: var(--radix-accordion-content-height); }
-  to { height: 0; }
-}
-
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
-}
-
-/* Ambient blob drift (Modern Dark Cinema — slow oscillation) */
-@keyframes blob-drift {
-  0%, 100% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(40px, -30px) scale(1.08); }
-  66% { transform: translate(-30px, 20px) scale(0.96); }
 }
 
 .animate-in {
@@ -193,23 +144,11 @@ body {
   animation: ping-once 0.4s ease-in-out;
 }
 
-.animate-accordion-down {
-  animation: accordion-down 0.2s ease-out;
-}
-
-.animate-accordion-up {
-  animation: accordion-up 0.2s ease-out;
-}
-
 .animate-shimmer {
   animation: shimmer 2s linear infinite;
 }
 
-.animate-blob {
-  animation: blob-drift 18s ease-in-out infinite;
-}
-
-/* Accessibility — respect reduced motion (per skill checklist) */
+/* Accessibility — respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -221,7 +160,7 @@ body {
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar — light */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -232,10 +171,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
+  background: #d8dde3;
   border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.16);
+  background: #c2c9d2;
 }

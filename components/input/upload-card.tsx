@@ -56,9 +56,9 @@ export function UploadCard() {
 
   if (imageBase64) {
     return (
-      <Card className="w-full max-w-lg mx-auto border-brand-500/20">
+      <Card className="w-full max-w-lg mx-auto border-accent-200">
         <CardContent className="flex items-center gap-4 p-6">
-          <div className="relative w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 ring-2 ring-brand-500/40">
+          <div className="relative w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 ring-2 ring-accent-300">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`data:image/jpeg;base64,${imageBase64}`}
@@ -67,8 +67,8 @@ export function UploadCard() {
             />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-ink-100 truncate">Image ready</p>
-            <p className="text-xs text-ink-400 mt-0.5 font-mono">Compressed & optimized</p>
+            <p className="text-sm font-medium text-ink truncate">Image ready</p>
+            <p className="text-xs text-ink-muted mt-0.5 font-mono">Compressed & optimized</p>
           </div>
           <Button
             variant="ghost"
@@ -86,23 +86,23 @@ export function UploadCard() {
 
   return (
     <Card
-      className="w-full max-w-lg mx-auto border-dashed border-white/15 hover:border-brand-500/50 hover:shadow-glow transition-all duration-300 cursor-pointer"
+      className="w-full max-w-lg mx-auto border-dashed border-line hover:border-accent-400 hover:bg-accent-50/40 transition-all duration-200 cursor-pointer"
       onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
       onDrop={handleDrop}
       onClick={() => inputRef.current?.click()}
     >
       <CardContent className="flex flex-col items-center justify-center py-12 gap-4">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-600/20 to-flush-500/15 border border-brand-500/20 flex items-center justify-center">
-          <Upload className="w-8 h-8 text-brand-300" />
+        <div className="w-16 h-16 rounded-2xl bg-accent-50 border border-accent-100 flex items-center justify-center">
+          <Upload className="w-8 h-8 text-accent-600" />
         </div>
         <div className="text-center">
-          <p className="text-base font-medium text-ink-100">
+          <p className="text-base font-medium text-ink">
             Upload your photo
           </p>
-          <p className="text-sm text-ink-300 mt-1">
+          <p className="text-sm text-ink-soft mt-1">
             Drag & drop or click to browse
           </p>
-          <p className="text-xs text-ink-400 mt-2 font-mono">
+          <p className="text-xs text-ink-muted mt-2 font-mono">
             JPEG, PNG, or WebP — max 15MB
           </p>
         </div>

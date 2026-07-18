@@ -47,8 +47,8 @@ export function Dashboard() {
             <ArrowLeft className="w-4 h-4" />
             New Analysis
           </Button>
-          <div className="flex gap-2 items-center text-xs text-ink-400">
-            <span className="px-2 py-1 rounded-full glass text-brand-300 font-mono">
+          <div className="flex gap-2 items-center text-xs text-ink-muted">
+            <span className="px-2 py-1 rounded-full accent-soft font-mono">
               {currentProvider}
             </span>
           </div>
@@ -60,7 +60,7 @@ export function Dashboard() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="relative w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 ring-2 ring-brand-500/40"
+              className="relative w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 ring-2 ring-accent-300"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -71,11 +71,11 @@ export function Dashboard() {
             </motion.div>
           )}
           <div className="flex-1 space-y-2">
-            <h2 className="text-2xl font-bold text-ink-100 font-display flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-brand-400" />
+            <h2 className="text-2xl font-bold text-ink font-display flex items-center gap-2">
+              <Sparkles className="w-6 h-6 text-accent-600" />
               Your Analysis Report
             </h2>
-            <div className="flex flex-wrap gap-3 text-xs text-ink-400 font-mono">
+            <div className="flex flex-wrap gap-3 text-xs text-ink-muted font-mono">
               <span className="flex items-center gap-1">
                 <User className="w-3 h-3" />
                 Estimated age: {result.estimated_age}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, Suspense } from "react";
+import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowLeft, Camera, Upload } from "lucide-react";
@@ -16,13 +16,6 @@ function AnalyzePage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { status, result, imageBase64 } = useAppStore();
-
-  useEffect(() => {
-    const cameraParam = searchParams.get("camera");
-    if (cameraParam === "true" && !imageBase64) {
-      // Let the CameraCard component handle activation
-    }
-  }, [searchParams, imageBase64]);
 
   // Show dashboard when analysis is complete
   if (status === "complete" && result) {
@@ -52,14 +45,14 @@ function AnalyzePage() {
         transition={{ duration: 0.5 }}
         className="text-center mb-10"
       >
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-brand-300 mb-4">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full accent-soft text-sm mb-4 font-mono">
           <Sparkles className="w-4 h-4" />
           AI Analysis
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-ink-100 font-display mb-3">
+        <h1 className="text-3xl sm:text-4xl font-bold text-ink font-display mb-3">
           Analyze Your Look
         </h1>
-        <p className="text-ink-300 max-w-md mx-auto text-sm sm:text-base">
+        <p className="text-ink-soft max-w-md mx-auto text-sm sm:text-base">
           Upload a photo or use your camera. Our AI will analyze your facial features
           and provide personalized looksmaxxing recommendations.
         </p>

@@ -66,15 +66,15 @@ export function formatConfidence(value: number): string {
 }
 
 export function scoreToColor(score: number): string {
-  if (score >= 8) return "text-emerald-400";
-  if (score >= 6) return "text-iris-400";
-  if (score >= 4) return "text-amber-400";
-  return "text-red-400";
+  if (score >= 8) return "text-emerald-600";
+  if (score >= 6) return "text-accent-600";
+  if (score >= 4) return "text-amber-600";
+  return "text-red-600";
 }
 
 export function scoreToBgColor(score: number): string {
   if (score >= 8) return "bg-emerald-500";
-  if (score >= 6) return "bg-iris-500";
+  if (score >= 6) return "bg-accent-500";
   if (score >= 4) return "bg-amber-500";
   return "bg-red-500";
 }

@@ -79,36 +79,36 @@ const faqs = [
 ];
 
 const exampleCards = [
-  { label: "Overall Score", value: "7.8/10", color: "text-brand-400" },
-  { label: "Symmetry", value: "8.2/10", color: "text-emerald-400" },
-  { label: "Skin Quality", value: "6.5/10", color: "text-amber-400" },
-  { label: "Potential", value: "9.1/10", color: "text-flush-400" },
+  { label: "Overall Score", value: "7.8/10", color: "text-accent-600" },
+  { label: "Symmetry", value: "8.2/10", color: "text-emerald-600" },
+  { label: "Skin Quality", value: "6.5/10", color: "text-amber-600" },
+  { label: "Potential", value: "9.1/10", color: "text-ink" },
 ];
 
 const container = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    transition: { staggerChildren: 0.08 },
   },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 16 },
   show: { opacity: 1, y: 0 },
 };
 
 export default function HomePage() {
   return (
     <div className="flex-1">
-      {/* Navigation — Glassmorphism sticky header */}
-      <header className="sticky top-0 z-50 glass-strong border-b border-white/[0.06]">
+      {/* Navigation — clean white bar */}
+      <header className="sticky top-0 z-50 border-b border-line bg-surface/85 backdrop-blur-md">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-flush-500 flex items-center justify-center shadow-glow">
+            <div className="w-9 h-9 rounded-xl bg-accent-600 flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg font-bold text-ink-100 font-display tracking-tight">
+            <span className="text-lg font-bold text-ink font-display tracking-tight">
               LooksMax AI
             </span>
           </div>
@@ -120,46 +120,28 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero — Modern Dark Cinema with ambient blobs */}
-      <section className="relative overflow-hidden">
-        {/* Ambient blob gradients — slow oscillation */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute top-[-10%] left-[10%] w-[520px] h-[520px] rounded-full bg-brand-600/12 blur-[120px] animate-blob" />
-          <div
-            className="absolute top-[5%] right-[5%] w-[420px] h-[420px] rounded-full bg-flush-500/10 blur-[110px] animate-blob"
-            style={{ animationDelay: "-6s" }}
-          />
-          <div
-            className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[440px] h-[440px] rounded-full bg-iris-600/12 blur-[120px] animate-blob"
-            style={{ animationDelay: "-12s" }}
-          />
-        </div>
-
-        {/* Mesh-tint base */}
-        <div className="absolute inset-0 bg-mesh-brand opacity-60" />
-
-        <div className="relative max-w-4xl mx-auto px-6 pt-28 pb-24 text-center">
+      {/* Hero — clean editorial, light */}
+      <section className="relative overflow-hidden bg-surface">
+        <div className="absolute inset-0 bg-[radial-gradient(60rem_30rem_at_50%_-10%,rgba(37,99,235,0.06),transparent)]" />
+        <div className="relative max-w-4xl mx-auto px-6 pt-24 pb-20 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-brand-300 mb-8">
-              <Sparkles className="w-4 h-4" />
-              AI-Powered Facial Analysis
-            </div>
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink-100 leading-[1.05]">
+            <span className="eyebrow">AI-Powered Facial Analysis</span>
+            <h1 className="mt-5 font-display text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink leading-[1.05]">
               Discover Your
               <br />
-              <span className="text-gradient-brand">Facial Potential</span>
+              <span className="text-accent-700">Facial Potential</span>
             </h1>
-            <p className="mt-7 text-lg text-ink-300 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-6 text-lg text-ink-soft max-w-2xl mx-auto leading-relaxed">
               AI-powered facial analysis and looksmaxxing recommendations. Upload a photo
               or use your camera to get a comprehensive report on your facial features,
               symmetry, and personalized improvement suggestions.
             </p>
 
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
               <Link href="/analyze">
                 <Button size="lg" className="gap-2 text-base px-8">
                   <Upload className="w-5 h-5" />
@@ -174,15 +156,15 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <p className="mt-5 text-xs text-ink-400 font-mono tracking-wide">
+            <p className="mt-5 text-xs text-ink-faint font-mono tracking-wide">
               No sign-up required. Images are never stored.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Example Cards — Bento-pop stat row */}
-      <section className="max-w-4xl mx-auto px-6 -mt-10 pb-16">
+      {/* Example Cards — stat row */}
+      <section className="max-w-4xl mx-auto px-6 -mt-8 pb-16">
         <motion.div
           variants={container}
           initial="hidden"
@@ -192,11 +174,9 @@ export default function HomePage() {
         >
           {exampleCards.map((card) => (
             <motion.div key={card.label} variants={item}>
-              <Card className="text-center hover:scale-[1.02] hover:border-white/15">
+              <Card className="text-center hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
                 <CardContent className="py-5">
-                  <p className="text-xs text-ink-400 mb-1 font-mono uppercase tracking-wider">
-                    {card.label}
-                  </p>
+                  <p className="eyebrow mb-1">{card.label}</p>
                   <p className={`text-2xl font-bold font-display ${card.color}`}>
                     {card.value}
                   </p>
@@ -207,7 +187,7 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      {/* Features — Bento Box Grid */}
+      {/* Features */}
       <section className="max-w-6xl mx-auto px-6 pb-24">
         <motion.div
           initial={{ opacity: 0 }}
@@ -215,10 +195,11 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-ink-100 font-display">
+          <span className="eyebrow">What you get</span>
+          <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-ink font-display">
             Everything you need
           </h2>
-          <p className="mt-3 text-ink-300 max-w-lg mx-auto">
+          <p className="mt-3 text-ink-soft max-w-lg mx-auto">
             Comprehensive analysis, actionable recommendations, and complete privacy.
           </p>
         </motion.div>
@@ -232,13 +213,13 @@ export default function HomePage() {
         >
           {features.map((feat) => (
             <motion.div key={feat.title} variants={item}>
-              <Card className="h-full hover:border-brand-400/30 hover:shadow-glow hover:scale-[1.02]">
+              <Card className="h-full hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
                 <CardHeader>
-                  <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-600/20 to-flush-500/15 border border-brand-500/20 flex items-center justify-center mb-3">
-                    <feat.icon className="w-5 h-5 text-brand-300" />
+                  <div className="w-11 h-11 rounded-xl bg-accent-50 border border-accent-100 flex items-center justify-center mb-3">
+                    <feat.icon className="w-5 h-5 text-accent-600" />
                   </div>
                   <CardTitle className="text-base font-display">{feat.title}</CardTitle>
-                  <CardDescription className="text-sm leading-relaxed">
+                  <CardDescription className="text-sm leading-relaxed text-ink-soft">
                     {feat.desc}
                   </CardDescription>
                 </CardHeader>
@@ -256,7 +237,8 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-ink-100 font-display">
+          <span className="eyebrow">Help center</span>
+          <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-ink font-display">
             Frequently Asked Questions
           </h2>
         </motion.div>
@@ -270,12 +252,12 @@ export default function HomePage() {
         >
           {faqs.map((faq, i) => (
             <motion.div key={i} variants={item}>
-              <Card className="hover:border-white/15">
+              <Card className="hover:shadow-md transition-all duration-200">
                 <CardHeader>
-                  <CardTitle className="text-base text-ink-100 font-display">
+                  <CardTitle className="text-base text-ink font-display">
                     {faq.q}
                   </CardTitle>
-                  <CardDescription className="text-sm leading-relaxed text-ink-300">
+                  <CardDescription className="text-sm leading-relaxed text-ink-soft">
                     {faq.a}
                   </CardDescription>
                 </CardHeader>
@@ -286,16 +268,16 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.06] py-12">
+      <footer className="border-t border-line py-12 bg-surface-2">
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-500 to-flush-500 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-accent-600 flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
-            <span className="text-sm font-semibold text-ink-100 font-display">LooksMax AI</span>
+            <span className="text-sm font-semibold text-ink font-display">LooksMax AI</span>
           </div>
 
-          <p className="text-xs text-ink-400 text-center font-mono">
+          <p className="text-xs text-ink-muted text-center">
             AI-generated aesthetic opinions, not scientific facts. Images are never stored.
           </p>
 
@@ -304,7 +286,7 @@ export default function HomePage() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-ink-400 hover:text-ink-100 transition-colors"
+              className="text-ink-faint hover:text-ink transition-colors"
             >
               <Code className="w-5 h-5" />
             </a>
@@ -312,7 +294,7 @@ export default function HomePage() {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-ink-400 hover:text-ink-100 transition-colors"
+              className="text-ink-faint hover:text-ink transition-colors"
             >
               <MessageCircle className="w-5 h-5" />
             </a>

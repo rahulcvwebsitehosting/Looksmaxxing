@@ -31,6 +31,7 @@ export function AnalyzeButton() {
     setProgress,
     setCurrentProvider,
     setResult,
+    clearResult,
     setError,
     error,
   } = useAppStore();
@@ -84,7 +85,7 @@ export function AnalyzeButton() {
     setProgress(0);
     setCurrentProvider("");
     setError(null);
-    setResult(null);
+    clearResult();
 
     const controller = new AbortController();
     abortControllerRef.current = controller;
@@ -138,7 +139,7 @@ export function AnalyzeButton() {
       }
       abortControllerRef.current = null;
     }
-  }, [imageBase64, imageFile, setStatus, setProgress, setCurrentProvider, setResult, setError]);
+  }, [imageBase64, imageFile, setStatus, setProgress, setCurrentProvider, setResult, clearResult, setError]);
 
   if (status === "analyzing") {
 
@@ -148,10 +149,10 @@ export function AnalyzeButton() {
       { name: "NVIDIA", active: currentProvider === "nvidia" },
     ];
     return (
-      <Card className="w-full max-w-lg mx-auto border-brand-500/20 overflow-hidden">
-        <div className="h-1 bg-white/[0.06]">
+      <Card className="w-full max-w-lg mx-auto border-accent-200 overflow-hidden">
+        <div className="h-1 bg-surface-3">
           <motion.div
-            className="h-full bg-gradient-to-r from-brand-500 via-iris-500 to-flush-500"
+            className="h-full bg-accent-600"
             initial={{ width: "0%" }}
             animate={{ width: `${Math.min(progress, 90)}%` }}
             transition={{ duration: 0.5 }}
@@ -170,8 +171,8 @@ export function AnalyzeButton() {
                 transition={{ delay: i * 0.2, duration: 0.4 }}
                 className={`px-3 py-1.5 rounded-full text-xs font-medium border font-mono ${
                   model.active
-                    ? "bg-brand-600/20 border-brand-500/40 text-brand-300"
-                    : "bg-white/[0.04] border-white/10 text-ink-400"
+                    ? "bg-accent-50 border-accent-200 text-accent-700"
+                    : "bg-surface-2 border-line text-ink-muted"
                 }`}
               >
                 {model.name}
@@ -182,19 +183,19 @@ export function AnalyzeButton() {
               animate={{ opacity: [0, 1, 0] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
             >
-              <Loader2 className="w-4 h-4 text-brand-400 animate-spin" />
+              <Loader2 className="w-4 h-4 text-accent-600 animate-spin" />
             </motion.div>
           </div>
 
           <div className="relative">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-brand-600/20 via-iris-600/10 to-flush-500/20 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full bg-brand-600/10 flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-brand-300" />
+            <div className="w-24 h-24 rounded-full bg-accent-50 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-accent-100/60 flex items-center justify-center">
+                <Sparkles className="w-8 h-8 text-accent-600" />
               </div>
             </div>
             <motion.div
-              className="absolute -inset-2 rounded-full border-2 border-brand-500/20"
-              animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.1, 0.3] }}
+              className="absolute -inset-2 rounded-full border-2 border-accent-200"
+              animate={{ scale: [1, 1.12, 1], opacity: [0.4, 0.15, 0.4] }}
               transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
             />
           </div>
@@ -207,12 +208,12 @@ export function AnalyzeButton() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.3 }}
-                className="text-base font-medium text-ink-100"
+                className="text-base font-medium text-ink"
               >
                 {LOADING_MESSAGES[messageIdx]}
               </motion.p>
             </AnimatePresence>
-            <p className="text-xs text-ink-400 font-mono">
+            <p className="text-xs text-ink-faint font-mono">
               {currentProvider
                 ? `Analysis in progress...`
                 : "Waking up AI models..."}
@@ -229,12 +230,12 @@ export function AnalyzeButton() {
 
   if (status === "error") {
     return (
-      <Card className="w-full max-w-lg mx-auto border-red-500/20">
+      <Card className="w-full max-w-lg mx-auto border-red-200">
         <CardContent className="flex flex-col items-center gap-4 py-8">
-          <div className="w-16 h-16 rounded-2xl bg-red-600/10 border border-red-500/20 flex items-center justify-center">
-            <AlertCircle className="w-8 h-8 text-red-400" />
+          <div className="w-16 h-16 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center">
+            <AlertCircle className="w-8 h-8 text-red-600" />
           </div>
-          <p className="text-sm text-red-400 text-center">{error}</p>
+          <p className="text-sm text-red-600 text-center">{error}</p>
           <div className="flex gap-3">
             <Button onClick={handleAnalyze} variant="default">
               Try Again
