@@ -3,8 +3,8 @@
 import { type AnalysisResult } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { ScribbleIcon } from "@/components/ui/scribble-icon";
 import { scoreToColor, scoreToBgColor, cn } from "@/lib/index";
-import { Star, TrendingUp } from "lucide-react";
 
 interface ScoreCardsProps {
   result: AnalysisResult;
@@ -13,23 +13,27 @@ interface ScoreCardsProps {
 function ScoreRing({ score, size = "lg" }: { score: number; size?: "sm" | "lg" }) {
   const dims = size === "lg" ? "w-28 h-28" : "w-20 h-20";
   const txtSize = size === "lg" ? "text-3xl" : "text-xl";
-  const strokeWidth = size === "lg" ? 6 : 5;
+  const strokeWidth = size === "lg" ? 5 : 4;
   const r = size === "lg" ? 44 : 32;
   const circ = 2 * Math.PI * r;
   const offset = circ - (score / 10) * circ;
 
   return (
     <div className={cn("relative flex items-center justify-center", dims)}>
-      <svg className="absolute inset-0 -rotate-90" viewBox={size === "lg" ? "0 0 100 100" : "0 0 72 72"}>
-          <circle
-            cx={size === "lg" ? 50 : 36}
-            cy={size === "lg" ? 50 : 36}
-            r={r}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={strokeWidth}
-            className="text-line"
-          />
+      <svg
+        className="absolute inset-0 -rotate-90"
+        viewBox={size === "lg" ? "0 0 100 100" : "0 0 72 72"}
+      >
+        <circle
+          cx={size === "lg" ? 50 : 36}
+          cy={size === "lg" ? 50 : 36}
+          r={r}
+          fill="none"
+          stroke="#2d2d2d"
+          strokeWidth={strokeWidth}
+          strokeDasharray="3 4"
+          className="opacity-30"
+        />
         <circle
           cx={size === "lg" ? 50 : 36}
           cy={size === "lg" ? 50 : 36}
@@ -44,7 +48,7 @@ function ScoreRing({ score, size = "lg" }: { score: number; size?: "sm" | "lg" }
           style={{ transition: "stroke-dashoffset 1s ease-out" }}
         />
       </svg>
-      <span className={cn("font-bold", txtSize, scoreToColor(score))}>
+      <span className={cn("font-display font-bold", txtSize, scoreToColor(score))}>
         {score.toFixed(1)}
       </span>
     </div>
@@ -54,9 +58,9 @@ function ScoreRing({ score, size = "lg" }: { score: number; size?: "sm" | "lg" }
 function FeatureBar({ label, score }: { label: string; score: number }) {
   return (
     <div className="space-y-1.5">
-      <div className="flex justify-between text-sm">
-        <span className="text-ink-soft">{label}</span>
-        <span className={cn("font-semibold font-mono", scoreToColor(score))}>{score.toFixed(1)}</span>
+      <div className="flex justify-between text-base font-body">
+        <span className="text-pencil-soft">{label}</span>
+        <span className={cn("font-bold font-mono", scoreToColor(score))}>{score.toFixed(1)}</span>
       </div>
       <Progress
         value={score * 10}
@@ -68,40 +72,40 @@ function FeatureBar({ label, score }: { label: string; score: number }) {
 
 export function ScoreCards({ result }: ScoreCardsProps) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <Card className="border-accent-200">
+    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <Card className="tilt-l">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-ink-soft flex items-center gap-2 font-mono">
-            <Star className="w-4 h-4 text-amber-600" />
+          <CardTitle className="text-sm font-display font-bold text-pencil-soft flex items-center gap-2 font-mono uppercase tracking-wide">
+            <ScribbleIcon name="star" className="w-4 h-4 stroke-amber" strokeWidth={2.2} />
             Overall Score
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-2">
           <ScoreRing score={result.overall_score} />
-          <p className="text-xs text-ink-muted text-center mt-1">
-            Current appearance rating
+          <p className="text-sm text-pencil-muted text-center mt-1 font-body">
+            Your current rating
           </p>
         </CardContent>
       </Card>
 
-      <Card className="border-accent-200">
+      <Card className="tilt-r">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-ink-soft flex items-center gap-2 font-mono">
-            <TrendingUp className="w-4 h-4 text-emerald-600" />
+          <CardTitle className="text-sm font-display font-bold text-pencil-soft flex items-center gap-2 font-mono uppercase tracking-wide">
+            <ScribbleIcon name="chart" className="w-4 h-4 stroke-emerald" strokeWidth={2.2} />
             Potential Score
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-2">
           <ScoreRing score={result.potential_score} />
-          <p className="text-xs text-ink-muted text-center mt-1">
+          <p className="text-sm text-pencil-muted text-center mt-1 font-body">
             Achievable with improvements
           </p>
         </CardContent>
       </Card>
 
-      <Card className="sm:col-span-2 lg:col-span-1">
+      <Card className="sm:col-span-2 lg:col-span-1 tilt-l-2">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-ink-soft font-mono">
+          <CardTitle className="text-sm font-display font-bold text-pencil-soft font-mono uppercase tracking-wide">
             Feature Breakdown
           </CardTitle>
         </CardHeader>

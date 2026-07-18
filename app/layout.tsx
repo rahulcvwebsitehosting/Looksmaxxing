@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
-import { Lexend, Source_Sans_3, JetBrains_Mono } from "next/font/google";
+import { Kalam, Patrick_Hand, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const lexend = Lexend({
+const kalam = Kalam({
   variable: "--font-display",
   subsets: ["latin"],
+  weight: ["300", "400", "700"],
   display: "swap",
 });
 
-const sourceSans = Source_Sans_3({
-  variable: "--font-sans",
+const patrickHand = Patrick_Hand({
+  variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400"],
   display: "swap",
 });
 
@@ -24,12 +26,12 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "LooksMax AI — Facial Analysis & Looksmaxxing",
   description:
-    "AI-powered facial attractiveness analysis and personalized looksmaxxing recommendations. Upload a photo or use your camera.",
+    "AI-powered facial attractiveness analysis and personalized looksmaxxing recommendations.",
   keywords: ["facial analysis", "looksmaxxing", "AI attractiveness", "beauty analysis", "looksmax"],
   openGraph: {
     title: "LooksMax AI — Discover Your Facial Potential",
     description:
-      "AI-powered facial analysis and looksmaxxing recommendations. Upload a photo or use your camera.",
+      "AI-powered facial analysis and looksmaxxing recommendations.",
     type: "website",
   },
 };
@@ -42,9 +44,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${lexend.variable} ${sourceSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${kalam.variable} ${patrickHand.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-surface text-ink font-sans">
+      <body className="min-h-full flex flex-col bg-paper text-pencil font-body">
         <Toaster
           position="top-center"
           richColors
@@ -53,9 +55,11 @@ export default function RootLayout({
           toastOptions={{
             style: {
               background: "#ffffff",
-              border: "1px solid #e6e8ec",
-              color: "#0f172a",
-              fontFamily: "var(--font-sans)",
+              border: "2px solid #2d2d2d",
+              borderRadius: "10px 16px 12px 14px",
+              color: "#2d2d2d",
+              fontFamily: "var(--font-body)",
+              boxShadow: "3px 3px 0 0 #2d2d2d",
             },
           }}
         />

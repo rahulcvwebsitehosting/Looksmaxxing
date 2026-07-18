@@ -1,63 +1,65 @@
 @import "tailwindcss";
 
 /*
-  LooksMax AI — Clean Professional Redesign
+  LooksMax AI — Hand-Drawn Boutique Agency
   ==================================================
-  Source themes (from UI UX Pro Max skill), deliberately AVOIDING the
-  "AI purple/pink gradient" anti-pattern:
-    • Swiss Modernism 2.0 → strict grid, mathematical spacing, single accent, high contrast
-    • Trust & Authority     → professional, restrained, blue/grey, WCAG AAA
-    • Minimal & Direct      → whitespace-heavy, clean typography, no decoration
-    • Bento Box Grid        → subtle neutral cards (kept, but matte/lighter)
+  Mixed sources (UI UX Pro Max skill):
+    • Sketch Hand-Drawn (84)  → warm paper, wobbly corners, hard offset shadows,
+                                 pencil-black borders, Kalam/PatrickHand fonts,
+                                 slight rotation, scribble line art (no emoji)
+    • Swiss Modernism 2.0 (50) → strict grid, single vibrant accent, no gradients,
+                                  mathematical spacing, high contrast
+    • Minimal & Direct (23)     → minimal copy, to-the-point, heavy whitespace
+    • Editorial Grid (66)       → typographic hierarchy
 
-  No glow, no gradients-on-text, no neon. Matte, light, human.
+  No purple/pink. No gradients. No glow. Matte, warm, human, hand-made.
 */
 
 @theme inline {
-  /* Neutral ink / surface scale (clean editorial light) */
-  --color-ink: #0f172a;
-  --color-ink-soft: #334155;
-  --color-ink-muted: #64748b;
-  --color-ink-faint: #94a3b8;
-  --color-line: #e6e8ec;
-  --color-line-soft: #f1f3f5;
+  /* Warm paper background scale */
+  --color-paper: #fdfbf7;
+  --color-paper-aged: #f5efe2;
+  --color-paper-dark: #e9e0cf;
+
+  /* Pencil ink for text & borders */
+  --color-pencil: #2d2d2d;
+  --color-pencil-soft: #4a4a4a;
+  --color-pencil-muted: #6b6b6b;
+
+  /* Single vibrant accent — Red Marker (no gradients, no mixing) */
+  --color-marker: #ff4d4d;
+  --color-marker-deep: #e53838;
+
+  /* Blue ballpoint — used ONLY for input focus rings */
+  --color-ballpoint: #2d5da1;
+
+  /* Post-it yellow — primary CTA */
+  --color-postit: #fff9c4;
+  --color-postit-deep: #fde68a;
+
+  /* Surface (cards are plain white, sitting on warm paper) */
   --color-surface: #ffffff;
-  --color-surface-2: #f8fafc;
-  --color-surface-3: #f1f5f9;
 
-  /* Single restrained accent — trustworthy slate-blue (no purple/pink) */
-  --color-accent-50: #eff6ff;
-  --color-accent-100: #dbeafe;
-  --color-accent-200: #bfdbfe;
-  --color-accent-300: #93c5fd;
-  --color-accent-400: #60a5fa;
-  --color-accent-500: #3b82f6;
-  --color-accent-600: #2563eb;
-  --color-accent-700: #1d4ed8;
-  --color-accent-800: #1e40af;
+  /* Status — single vibrant, flat */
+  --color-emerald: #059669;
+  --color-amber: #d97706;
+  --color-red: #dc2626;
 
-  /* Warm neutral for the "human" photo/result accent */
-  --color-stone-400: #a8a29e;
-  --color-stone-500: #78716c;
-
-  /* Status — muted, professional */
-  --color-emerald-500: #10b981;
-  --color-emerald-600: #059669;
-  --color-amber-500: #f59e0b;
-  --color-amber-600: #d97706;
-  --color-red-500: #ef4444;
-  --color-red-600: #dc2626;
-  --color-sky-500: #0ea5e9;
-
-  /* Fonts */
-  --font-sans: var(--font-sans);
+  /* Fonts — hand-drawn feel */
   --font-display: var(--font-display);
+  --font-body: var(--font-body);
   --font-mono: var(--font-mono);
 
-  /* Soft, matte elevation (very subtle, no colored glow) */
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 2px 4px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 6px 16px rgba(15, 23, 42, 0.06), 0 12px 28px rgba(15, 23, 42, 0.06);
+  /* Hard offset shadows (paper-stacked, no blur) */
+  --shadow-hard-sm: 3px 3px 0 0 #2d2d2d;
+  --shadow-hard-md: 5px 5px 0 0 #2d2d2d;
+  --shadow-hard-lg: 8px 8px 0 0 #2d2d2d;
+  --shadow-hard-marker: 4px 4px 0 0 #ff4d4d;
+
+  /* Wobbly corner radii (unique per corner) */
+  --radius-wobble-sm: 14px 20px 16px 22px;
+  --radius-wobble-md: 18px 28px 22px 32px;
+  --radius-wobble-lg: 24px 38px 30px 44px;
 }
 
 html {
@@ -67,85 +69,149 @@ html {
 }
 
 body {
-  background: #ffffff;
-  color: #0f172a;
-  font-family: var(--font-sans), "Source Sans 3", system-ui, sans-serif;
+  background: var(--color-paper);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(45, 45, 45, 0.04) 1px, transparent 0);
+  background-size: 22px 22px;
+  color: var(--color-pencil);
+  font-family: var(--font-body), "PatrickHand", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.011em;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: rgba(37, 99, 235, 0.16);
-  color: #0f172a;
+  background: #fff9c4;
+  color: #2d2d2d;
 }
 
-/* Display font helper — Lexend */
+/* Display font helper — Kalam Bold (hand-drawn, felt-tip) */
 .font-display {
-  font-family: var(--font-display), "Lexend", system-ui, sans-serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display), "Kalam", system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.005em;
 }
 
-/* Mono helper for data labels — JetBrains Mono */
+/* Body font helper — PatrickHand (human, legible) */
+.font-body {
+  font-family: var(--font-body), "PatrickHand", system-ui, sans-serif;
+}
+
+/* Mono helper — JetBrains Mono for data/numbers only */
 .font-mono {
   font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
 }
 
-/* ---------- Subtle surface cards (matte, no glow) ---------- */
-.surface-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
-  box-shadow: var(--shadow-sm);
+/* ---------- Wobbly radii ---------- */
+.wobble-sm { border-radius: var(--radius-wobble-sm); }
+.wobble-md { border-radius: var(--radius-wobble-md); }
+.wobble-lg { border-radius: var(--radius-wobble-lg); }
+
+/* ---------- Hard offset shadows ---------- */
+.hard-shadow { box-shadow: var(--shadow-hard-md); }
+.hard-shadow-sm { box-shadow: var(--shadow-hard-sm); }
+.hard-shadow-lg { box-shadow: var(--shadow-hard-lg); }
+.hard-shadow-marker { box-shadow: var(--shadow-hard-marker); }
+
+/* ---------- Slight tilt for cards ---------- */
+.tilt-l { transform: rotate(-1deg); }
+.tilt-r { transform: rotate(1deg); }
+.tilt-l-2 { transform: rotate(-1.6deg); }
+.tilt-r-2 { transform: rotate(1.6deg); }
+
+/* ---------- Pencil border (2px solid pencil) ---------- */
+.pencil-border { border: 2px solid var(--color-pencil); }
+.pencil-border-3 { border: 3px solid var(--color-pencil); }
+.dashed-border { border: 2px dashed var(--color-pencil); }
+.dashed-border-marker { border: 2px dashed var(--color-marker); }
+
+/* ---------- Post-it primary button press effect ---------- */
+.btn-postit {
+  background: var(--color-postit);
+  border: 2px solid var(--color-pencil);
+  box-shadow: var(--shadow-hard-sm);
+  color: var(--color-pencil);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn-postit:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-hard-md);
+}
+.btn-postit:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
 }
 
-/* ---------- Soft accent tint block (no gradient text) ---------- */
-.accent-soft {
-  background: var(--color-accent-50);
-  border: 1px solid var(--color-accent-100);
-  color: var(--color-accent-700);
+/* ---------- Marker accent button ---------- */
+.btn-marker {
+  background: var(--color-marker);
+  border: 2px solid var(--color-pencil);
+  box-shadow: var(--shadow-hard-sm);
+  color: #ffffff;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn-marker:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-hard-md);
+}
+.btn-marker:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
 }
 
-/* Section eyebrow / label */
+/* ---------- Eyebrow / handwritten label ---------- */
 .eyebrow {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  font-family: var(--font-display), "Kalam", system-ui, sans-serif;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  color: var(--color-marker);
   text-transform: uppercase;
-  color: var(--color-ink-muted);
+  font-weight: 700;
 }
 
-/* ---------- Animations (calm, professional) ---------- */
+/* ---------- Underline scribble (for emphasis) ---------- */
+.scribble-underline {
+  background-image: linear-gradient(transparent 88%, rgba(255, 77, 77, 0.55) 0);
+  background-size: 100% 100%;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+/* Paper texture helper */
+.paper-texture {
+  background-color: var(--color-paper);
+  background-image: radial-gradient(circle at 1px 1px, rgba(45,45,45,0.04) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* ---------- Animations (calm, paper-like) ---------- */
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slide-in-from-bottom-6 {
-  from { transform: translateY(1.5rem); }
-  to { transform: translateY(0); }
+@keyframes jiggle {
+  0%, 100% { transform: rotate(-1deg); }
+  25% { transform: rotate(1deg); }
+  50% { transform: rotate(-2deg); }
+  75% { transform: rotate(1.5deg); }
 }
 
-@keyframes ping-once {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+@keyframes pulse-marker {
+  0%, 100% { box-shadow: var(--shadow-hard-sm); }
+  50% { box-shadow: var(--shadow-hard-sm), 0 0 0 6px rgba(255, 77, 77, 0.18); }
 }
 
 .animate-in {
-  animation: fade-in 0.5s ease-out, slide-in-from-bottom-6 0.5s ease-out;
+  animation: fade-in 0.5s ease-out both;
 }
 
-.animate-ping-once {
-  animation: ping-once 0.4s ease-in-out;
+.animate-jiggle {
+  animation: jiggle 0.4s ease-in-out;
 }
 
-.animate-shimmer {
-  animation: shimmer 2s linear infinite;
+.animate-pulse-marker {
+  animation: pulse-marker 1.8s ease-in-out infinite;
 }
 
 /* Accessibility — respect reduced motion */
@@ -158,23 +224,22 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .tilt-l, .tilt-r, .tilt-l-2, .tilt-r-2 { transform: none !important; }
 }
 
-/* Custom scrollbar — light */
+/* Custom scrollbar — paper */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #f5efe2;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #d8dde3;
-  border-radius: 8px;
+  background: #2d2d2d;
+  border-radius: 0;
+  border: 2px solid #f5efe2;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #c2c9d2;
+  background: #ff4d4d;
 }

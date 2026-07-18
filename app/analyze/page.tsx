@@ -3,8 +3,8 @@
 import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ArrowLeft, Camera, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ScribbleIcon } from "@/components/ui/scribble-icon";
 import { UploadCard } from "@/components/input/upload-card";
 import { CameraCard } from "@/components/input/camera-card";
 import { AnalyzeButton } from "@/components/input/analyze-button";
@@ -17,7 +17,6 @@ function AnalyzePage() {
   const router = useRouter();
   const { status, result, imageBase64 } = useAppStore();
 
-  // Show dashboard when analysis is complete
   if (status === "complete" && result) {
     return (
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
@@ -32,77 +31,66 @@ function AnalyzePage() {
       <div className="mb-8">
         <Link href="/">
           <Button variant="ghost" size="sm" className="gap-2">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
+            <ScribbleIcon name="arrow" className="w-4 h-4 scale-x-[-1]" strokeWidth={2.4} />
+            Back home
           </Button>
         </Link>
       </div>
 
-      {/* Page header */}
+      {/* Page header — minimal, direct */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.4 }}
         className="text-center mb-10"
       >
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full accent-soft text-sm mb-4 font-mono">
-          <Sparkles className="w-4 h-4" />
-          AI Analysis
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-ink font-display mb-3">
-          Analyze Your Look
+        <p className="eyebrow mb-3">Step 1 — the photo</p>
+        <h1 className="text-4xl sm:text-5xl font-display font-bold text-pencil mb-3 leading-tight">
+          Show us your <span className="scribble-underline">face</span>.
         </h1>
-        <p className="text-ink-soft max-w-md mx-auto text-sm sm:text-base">
-          Upload a photo or use your camera. Our AI will analyze your facial features
-          and provide personalized looksmaxxing recommendations.
+        <p className="text-pencil-soft max-w-md mx-auto text-lg font-body">
+          Upload a clear front-on photo. Or use your camera, live.
         </p>
       </motion.div>
 
-      {/* Input section */}
       <AnimatePresence mode="wait">
         <motion.div
           key="input-section"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.15 }}
+          transition={{ duration: 0.35, delay: 0.1 }}
           className="space-y-6"
         >
           {/* Tabs: Upload vs Camera */}
           {!imageBase64 && (
             <div className="flex justify-center gap-3">
               <Button
-                variant={
-                  !searchParams.get("camera") ? "default" : "secondary"
-                }
+                variant={!searchParams.get("camera") ? "marker" : "outline"}
                 size="sm"
                 onClick={() => router.push("/analyze")}
                 className="gap-2"
               >
-                <Upload className="w-4 h-4" />
+                <ScribbleIcon name="upload" className="w-4 h-4 stroke-white" strokeWidth={2.4} />
                 Upload
               </Button>
               <Button
-                variant={
-                  searchParams.get("camera") === "true" ? "default" : "secondary"
-                }
+                variant={searchParams.get("camera") === "true" ? "marker" : "outline"}
                 size="sm"
                 onClick={() => router.push("/analyze?camera=true")}
                 className="gap-2"
               >
-                <Camera className="w-4 h-4" />
+                <ScribbleIcon name="camera" className="w-4 h-4 stroke-white" strokeWidth={2.4} />
                 Camera
               </Button>
             </div>
           )}
 
-          {/* Show appropriate input card */}
           {searchParams.get("camera") === "true" ? (
             <CameraCard />
           ) : (
             <UploadCard />
           )}
 
-          {/* Analyze button */}
           <AnimatePresence>
             {imageBase64 && (
               <motion.div

@@ -66,28 +66,28 @@ export function formatConfidence(value: number): string {
 }
 
 export function scoreToColor(score: number): string {
-  if (score >= 8) return "text-emerald-600";
-  if (score >= 6) return "text-accent-600";
-  if (score >= 4) return "text-amber-600";
-  return "text-red-600";
+  if (score >= 8) return "text-emerald";
+  if (score >= 6) return "text-ballpoint";
+  if (score >= 4) return "text-amber";
+  return "text-marker";
 }
 
 export function scoreToBgColor(score: number): string {
-  if (score >= 8) return "bg-emerald-500";
-  if (score >= 6) return "bg-accent-500";
-  if (score >= 4) return "bg-amber-500";
-  return "bg-red-500";
+  if (score >= 8) return "bg-emerald";
+  if (score >= 6) return "bg-ballpoint";
+  if (score >= 4) return "bg-amber";
+  return "bg-marker";
 }
 
 export function difficultyColor(difficulty: string): string {
   switch (difficulty) {
     case "easy":
-      return "text-emerald-400 bg-emerald-500/10 border-emerald-500/20";
+      return "text-emerald bg-surface border-emerald pencil-border";
     case "medium":
-      return "text-amber-400 bg-amber-500/10 border-amber-500/20";
+      return "text-amber bg-surface border-amber pencil-border";
     case "hard":
-      return "text-red-400 bg-red-500/10 border-red-500/20";
+      return "text-marker bg-surface pencil-border";
     default:
-      return "text-ink-300 bg-white/[0.04] border-white/10";
+      return "text-pencil bg-surface pencil-border";
   }
 }

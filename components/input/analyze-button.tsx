@@ -2,22 +2,22 @@
 
 import { useAppStore } from "@/hooks/store";
 import { Button } from "@/components/ui/button";
+import { ScribbleIcon } from "@/components/ui/scribble-icon";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Loader2, Sparkles, AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
 
 const LOADING_MESSAGES = [
   "Waking up the AI models...",
-  "Gemini is scanning your facial symmetry...",
+  "Gemini is scanning your symmetry...",
   "Ollama is analyzing your features...",
-  "NVIDIA is evaluating your proportions...",
-  "AI models are collaborating on your rating...",
-  "Checking golden ratios across models...",
+  "NVIDIA is evaluating proportions...",
+  "Models are collaborating on your rating...",
+  "Checking golden ratios...",
   "Cross-referencing beauty benchmarks...",
-  "Compiling your personalized report...",
+  "Compiling your report...",
 ];
 
 export function AnalyzeButton() {
@@ -70,22 +70,18 @@ export function AnalyzeButton() {
       return;
     }
 
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    if (abortControllerRef.current) abortControllerRef.current.abort();
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
 
-    clearResult();
     setStatus("analyzing");
     setProgress(0);
     setCurrentProvider("");
     setError(null);
+    clearResult();
 
     const controller = new AbortController();
     abortControllerRef.current = controller;
@@ -142,65 +138,36 @@ export function AnalyzeButton() {
   }, [imageBase64, imageFile, setStatus, setProgress, setCurrentProvider, setResult, clearResult, setError]);
 
   if (status === "analyzing") {
-
     const models = [
       { name: "Gemini", active: !currentProvider || currentProvider === "gemini" },
       { name: "Ollama", active: currentProvider === "ollama" },
       { name: "NVIDIA", active: currentProvider === "nvidia" },
     ];
     return (
-      <Card className="w-full max-w-lg mx-auto border-accent-200 overflow-hidden">
-        <div className="h-1 bg-surface-3">
-          <motion.div
-            className="h-full bg-accent-600"
-            initial={{ width: "0%" }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5 }}
-          />
-        </div>
+      <Card className="w-full max-w-lg mx-auto tilt-l">
         <CardContent className="flex flex-col items-center gap-6 py-10">
-          <div className="flex items-center gap-3">
-            {models.map((model, i) => (
-              <motion.div
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            {models.map((model) => (
+              <div
                 key={model.name}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{
-                  opacity: model.active ? 1 : 0.4,
-                  scale: model.active ? 1 : 0.85,
-                }}
-                transition={{ delay: i * 0.2, duration: 0.4 }}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium border font-mono ${
+                className={`px-3 py-1.5 wobble-sm text-xs font-display font-bold border font-mono ${
                   model.active
-                    ? "bg-accent-50 border-accent-200 text-accent-700"
-                    : "bg-surface-2 border-line text-ink-muted"
+                    ? "bg-postit pencil-border text-pencil hard-shadow-sm"
+                    : "bg-surface pencil-border text-pencil-muted opacity-60"
                 }`}
               >
                 {model.name}
-              </motion.div>
+              </div>
             ))}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 1, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-            >
-              <Loader2 className="w-4 h-4 text-accent-600 animate-spin" />
-            </motion.div>
           </div>
 
           <div className="relative">
-            <div className="w-24 h-24 rounded-full bg-accent-50 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full bg-accent-100/60 flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-accent-600" />
-              </div>
+            <div className="w-24 h-24 wobble-md bg-paper-aged pencil-border flex items-center justify-center hard-shadow-sm animate-jiggle">
+              <ScribbleIcon name="spark" className="w-9 h-9 stroke-marker" strokeWidth={2.4} />
             </div>
-            <motion.div
-              className="absolute -inset-2 rounded-full border-2 border-accent-200"
-              animate={{ scale: [1, 1.12, 1], opacity: [0.4, 0.15, 0.4] }}
-              transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-            />
           </div>
 
-          <div className="text-center space-y-2 w-full">
+          <div className="text-center space-y-2 w-full max-w-sm">
             <AnimatePresence mode="wait">
               <motion.p
                 key={messageIdx}
@@ -208,20 +175,15 @@ export function AnalyzeButton() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.3 }}
-                className="text-base font-medium text-ink"
+                className="text-lg font-display font-bold text-pencil"
               >
                 {LOADING_MESSAGES[messageIdx]}
               </motion.p>
             </AnimatePresence>
-            <p className="text-xs text-ink-faint font-mono">
-              {currentProvider
-                ? `Analysis in progress...`
-                : "Waking up AI models..."}
+            <p className="text-xs text-pencil-muted font-mono">
+              {currentProvider ? `Analysis in progress...` : "Waking up AI models..."}
             </p>
-            <Progress
-              value={progress}
-              className="mt-2"
-            />
+            <Progress value={progress} className="mt-3" />
           </div>
         </CardContent>
       </Card>
@@ -230,23 +192,24 @@ export function AnalyzeButton() {
 
   if (status === "error") {
     return (
-      <Card className="w-full max-w-lg mx-auto border-red-200">
+      <Card className="w-full max-w-lg mx-auto tilt-r dashed-border-marker">
         <CardContent className="flex flex-col items-center gap-4 py-8">
-          <div className="w-16 h-16 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center">
-            <AlertCircle className="w-8 h-8 text-red-600" />
+          <div className="wobble-sm bg-paper-aged pencil-border p-4 hard-shadow-sm">
+            <ScribbleIcon name="alert" className="w-9 h-9 stroke-marker" strokeWidth={2.4} />
           </div>
-          <p className="text-sm text-red-600 text-center">{error}</p>
+          <p className="text-base text-marker text-center font-body max-w-sm">{error}</p>
           <div className="flex gap-3">
-            <Button onClick={handleAnalyze} variant="default">
-              Try Again
+            <Button onClick={handleAnalyze} variant="marker" className="gap-2">
+              <ScribbleIcon name="spark" className="w-4 h-4 stroke-white" strokeWidth={2.4} />
+              Try again
             </Button>
             <Button
               variant="outline"
-              onClick={() => {
-                useAppStore.getState().reset();
-              }}
+              onClick={() => useAppStore.getState().reset()}
+              className="gap-2"
             >
-              Start Over
+              <ScribbleIcon name="trash" className="w-4 h-4" strokeWidth={2.4} />
+              Start over
             </Button>
           </div>
         </CardContent>
@@ -255,9 +218,9 @@ export function AnalyzeButton() {
   }
 
   return (
-    <Button onClick={handleAnalyze} size="lg" className="w-full max-w-lg mx-auto gap-2">
-      <Sparkles className="w-5 h-5" />
-      Analyze My Look
+    <Button onClick={handleAnalyze} size="lg" variant="marker" className="w-full max-w-lg mx-auto gap-2">
+      <ScribbleIcon name="spark" className="w-5 h-5 stroke-white" strokeWidth={2.4} />
+      Analyze my look
     </Button>
   );
 }

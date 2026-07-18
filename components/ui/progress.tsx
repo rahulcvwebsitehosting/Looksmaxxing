@@ -12,14 +12,14 @@ export function Progress({ value, className, indicatorClassName }: ProgressProps
   return (
     <div
       className={cn(
-        "h-2 w-full rounded-full bg-surface-3 overflow-hidden",
+        "h-3 w-full bg-paper-aged pencil-border rounded-[8px_10px_8px_12px] overflow-hidden",
         className
       )}
     >
       <div
         className={cn(
-          "h-full rounded-full transition-all duration-500 ease-out",
-          indicatorClassName || "bg-accent-600"
+          "h-full bg-marker transition-all duration-500 ease-out",
+          indicatorClassName
         )}
         style={{ width: `${Math.min(Math.max(value, 0), 100)}%` }}
       />

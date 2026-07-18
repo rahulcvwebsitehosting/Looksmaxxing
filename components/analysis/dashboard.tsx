@@ -5,13 +5,7 @@ import { ScoreCards } from "./score-cards";
 import { ChartsSection } from "./charts-section";
 import { Recommendations } from "./recommendations";
 import { Button } from "@/components/ui/button";
-import {
-  Download,
-  ArrowLeft,
-  Sparkles,
-  User,
-  Clock,
-} from "lucide-react";
+import { ScribbleIcon } from "@/components/ui/scribble-icon";
 import { motion } from "framer-motion";
 
 export function Dashboard() {
@@ -32,79 +26,72 @@ export function Dashboard() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       className="space-y-8 max-w-5xl mx-auto"
     >
-        {/* Top bar */}
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <Button
-            variant="ghost"
-            onClick={() => reset()}
-            className="gap-2"
+      {/* Top bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <Button
+          variant="ghost"
+          onClick={() => reset()}
+          className="gap-2"
+        >
+          <ScribbleIcon name="arrow" className="w-4 h-4 scale-x-[-1]" strokeWidth={2.4} />
+          New analysis
+        </Button>
+        <span className="px-3 py-1.5 wobble-sm bg-postit pencil-border font-mono text-xs font-bold text-pencil hard-shadow-sm">
+          {currentProvider}
+        </span>
+      </div>
+
+      {/* Image preview + heading */}
+      <div className="flex flex-wrap items-start gap-6">
+        {imageBase64 && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative w-24 h-24 wobble-sm overflow-hidden flex-shrink-0 pencil-border hard-shadow-sm tilt-l"
           >
-            <ArrowLeft className="w-4 h-4" />
-            New Analysis
-          </Button>
-          <div className="flex gap-2 items-center text-xs text-ink-muted">
-            <span className="px-2 py-1 rounded-full accent-soft font-mono">
-              {currentProvider}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`data:image/jpeg;base64,${imageBase64}`}
+              alt="Analyzed"
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        )}
+        <div className="flex-1 space-y-2">
+          <h2 className="text-3xl font-display font-bold text-pencil flex items-center gap-2">
+            <ScribbleIcon name="spark" className="w-7 h-7 stroke-marker" strokeWidth={2.4} />
+            Your <span className="scribble-underline">report</span>.
+          </h2>
+          <div className="flex flex-wrap gap-4 text-sm text-pencil-soft font-body">
+            <span className="flex items-center gap-1.5">
+              <ScribbleIcon name="face" className="w-4 h-4" strokeWidth={2.2} />
+              Est. age: <span className="font-bold text-pencil font-mono">{result.estimated_age}</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <ScribbleIcon name="clock" className="w-4 h-4" strokeWidth={2.2} />
+              Analyzed by <span className="font-bold text-pencil font-mono">{currentProvider}</span>
             </span>
           </div>
         </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleDownload}
+          className="gap-2"
+        >
+          <ScribbleIcon name="upload" className="w-4 h-4 scale-y-[-1]" strokeWidth={2.4} />
+          Export
+        </Button>
+      </div>
 
-        {/* Image preview + meta */}
-        <div className="flex flex-wrap items-start gap-6">
-          {imageBase64 && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="relative w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 ring-2 ring-accent-300"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`data:image/jpeg;base64,${imageBase64}`}
-                alt="Analyzed"
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          )}
-          <div className="flex-1 space-y-2">
-            <h2 className="text-2xl font-bold text-ink font-display flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-accent-600" />
-              Your Analysis Report
-            </h2>
-            <div className="flex flex-wrap gap-3 text-xs text-ink-muted font-mono">
-              <span className="flex items-center gap-1">
-                <User className="w-3 h-3" />
-                Estimated age: {result.estimated_age}
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                Analyzed by {currentProvider}
-              </span>
-            </div>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleDownload}
-            className="gap-2"
-          >
-            <Download className="w-4 h-4" />
-            Export Report
-          </Button>
-        </div>
-
-        {/* Score Cards */}
-        <ScoreCards result={result} />
-
-        {/* Charts */}
-        <ChartsSection result={result} />
-
-        {/* Recommendations */}
-        <Recommendations result={result} />
+      <ScoreCards result={result} />
+      <ChartsSection result={result} />
+      <Recommendations result={result} />
     </motion.div>
   );
 }

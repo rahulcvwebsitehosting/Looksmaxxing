@@ -4,24 +4,28 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/index";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-medium font-sans transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap font-display font-bold text-base transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ballpoint/40 disabled:pointer-events-none disabled:opacity-50 select-none",
   {
     variants: {
       variant: {
         default:
-          "bg-accent-600 text-white shadow-md hover:bg-accent-700 active:scale-[0.98]",
+          "btn-postit rounded-[14px_18px_14px_20px] h-12 px-7 py-2.5",
+        marker:
+          "btn-marker rounded-[14px_18px_14px_20px] h-12 px-7 py-2.5",
         secondary:
-          "bg-surface text-ink border border-line hover:bg-surface-2 active:scale-[0.98]",
-        ghost: "text-ink-soft hover:text-ink hover:bg-surface-2 active:scale-[0.98]",
-        destructive: "bg-red-600 text-white hover:bg-red-500 shadow-md active:scale-[0.98]",
+          "bg-surface text-pencil pencil-border rounded-[14px_18px_14px_20px] hard-shadow-sm hover:-translate-x-px hover:-translate-y-px active:translate-x-[3px] active:translate-y-[3px] active:shadow-none h-12 px-7 py-2.5",
+        ghost:
+          "text-pencil hover:text-marker active:scale-[0.98] h-12 px-7 py-2.5",
+        destructive:
+          "bg-marker text-white pencil-border rounded-[14px_18px_14px_20px] hard-shadow-sm active:translate-x-[3px] active:translate-y-[3px] active:shadow-none h-12 px-7 py-2.5",
         outline:
-          "border border-line text-ink hover:bg-surface-2 hover:border-ink-faint active:scale-[0.98]",
+          "dashed-border bg-surface text-pencil rounded-[14px_18px_14px_20px] hover:bg-postit active:translate-x-[3px] active:translate-y-[3px] active:shadow-none h-12 px-7 py-2.5",
       },
       size: {
-        default: "h-11 px-6 py-3",
-        sm: "h-9 px-4 text-xs",
-        lg: "h-14 px-8 text-base rounded-xl",
-        icon: "h-10 w-10 rounded-xl",
+        default: "h-12 px-7 py-2.5 text-base",
+        sm: "h-10 px-5 text-sm",
+        lg: "h-14 px-9 text-lg rounded-[16px_24px_18px_26px]",
+        icon: "h-11 w-11 rounded-[12px_16px_14px_18px]",
       },
     },
     defaultVariants: {

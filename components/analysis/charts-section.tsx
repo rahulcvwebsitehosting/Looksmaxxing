@@ -2,6 +2,7 @@
 
 import { type AnalysisResult } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScribbleIcon } from "@/components/ui/scribble-icon";
 import {
   RadarChart,
   PolarGrid,
@@ -17,17 +18,16 @@ import {
   Tooltip,
   Cell,
 } from "recharts";
-import { Sparkles } from "lucide-react";
 
 interface ChartsSectionProps {
   result: AnalysisResult;
 }
 
 function scoreToHex(score: number): string {
-  if (score >= 8) return "#34d399";
-  if (score >= 6) return "#6366f1";
-  if (score >= 4) return "#f59e0b";
-  return "#ef4444";
+  if (score >= 8) return "#059669";
+  if (score >= 6) return "#2d5da1";
+  if (score >= 4) return "#d97706";
+  return "#ff4d4d";
 }
 
 const RADAR_DATA = (result: AnalysisResult) => [
@@ -48,81 +48,89 @@ const MASC_FEM_DATA = (result: AnalysisResult) => [
 
 export function ChartsSection({ result }: ChartsSectionProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <Card>
+    <div className="grid gap-5 md:grid-cols-2">
+      <Card className="tilt-l">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-ink-soft flex items-center gap-2 font-mono">
-            <Sparkles className="w-4 h-4 text-accent-600" />
-            Facial Features Radar
+          <CardTitle className="text-sm font-display font-bold text-pencil-soft flex items-center gap-2 font-mono uppercase tracking-wide">
+            <ScribbleIcon name="chart" className="w-4 h-4 stroke-marker" strokeWidth={2.2} />
+            Facial Features
           </CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <RadarChart data={RADAR_DATA(result)}>
-              <PolarGrid stroke="#e6e8ec" />
+              <PolarGrid stroke="#e9e0cf" />
               <PolarAngleAxis
                 dataKey="feature"
-                tick={{ fill: "#64748b", fontSize: 11 }}
+                tick={{ fill: "#2d2d2d", fontSize: 11, fontFamily: "PatrickHand" }}
               />
               <PolarRadiusAxis
                 angle={90}
                 domain={[0, 10]}
-                tick={{ fill: "#94a3b8", fontSize: 10 }}
-                stroke="#e6e8ec"
+                tick={{ fill: "#6b6b6b", fontSize: 10 }}
+                stroke="#e9e0cf"
               />
               <Radar
                 name="Score"
                 dataKey="value"
-                stroke="#2563eb"
-                fill="#2563eb"
-                fillOpacity={0.18}
-                strokeWidth={2}
+                stroke="#ff4d4d"
+                fill="#ff4d4d"
+                fillOpacity={0.2}
+                strokeWidth={2.4}
               />
             </RadarChart>
           </ResponsiveContainer>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="tilt-r">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-ink-soft flex items-center gap-2 font-mono">
-            <Sparkles className="w-4 h-4 text-accent-600" />
-            Masculine / Feminine Traits
+          <CardTitle className="text-sm font-display font-bold text-pencil-soft flex items-center gap-2 font-mono uppercase tracking-wide">
+            <ScribbleIcon name="face" className="w-4 h-4 stroke-ballpoint" strokeWidth={2.2} />
+            Masc / Fem Traits
           </CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={MASC_FEM_DATA(result)} barCategoryGap="40%">
-              <CartesianGrid strokeDasharray="3 3" stroke="#eef0f3" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f5efe2" />
               <XAxis
                 dataKey="name"
-                tick={{ fill: "#334155", fontSize: 12 }}
-                stroke="#e6e8ec"
+                tick={{ fill: "#2d2d2d", fontSize: 12, fontFamily: "PatrickHand" }}
+                stroke="#e9e0cf"
               />
-              <YAxis domain={[0, 10]} tick={{ fill: "#64748b", fontSize: 11 }} stroke="#e6e8ec" />
+              <YAxis
+                domain={[0, 10]}
+                tick={{ fill: "#6b6b6b", fontSize: 11 }}
+                stroke="#e9e0cf"
+              />
               <Tooltip
-                cursor={{ fill: "rgba(37,99,235,0.06)" }}
+                cursor={{ fill: "rgba(255,77,77,0.06)" }}
                 contentStyle={{
-                  backgroundColor: "#ffffff",
-                  border: "1px solid #e6e8ec",
-                  borderRadius: "12px",
-                  color: "#0f172a",
+                  backgroundColor: "#fdfbf7",
+                  border: "2px solid #2d2d2d",
+                  borderRadius: "10px 14px 10px 12px",
+                  color: "#2d2d2d",
+                  fontFamily: "PatrickHand",
+                  boxShadow: "3px 3px 0 0 #2d2d2d",
                 }}
               />
-              <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={60}>
+              <Bar dataKey="value" radius={[6, 6, 0, 0]} barSize={60}>
                 {MASC_FEM_DATA(result).map((entry, idx) => (
                   <Cell
                     key={idx}
                     fill={scoreToHex(entry.value)}
-                    fillOpacity={0.8}
+                    fillOpacity={0.85}
+                    stroke="#2d2d2d"
+                    strokeWidth={1}
                   />
                 ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
           <div className="mt-3 space-y-2">
-            <p className="text-xs text-ink-muted">{result.masculinity.description}</p>
-            <p className="text-xs text-ink-muted">{result.femininity.description}</p>
+            <p className="text-sm text-pencil-muted font-body">{result.masculinity.description}</p>
+            <p className="text-sm text-pencil-muted font-body">{result.femininity.description}</p>
           </div>
         </CardContent>
       </Card>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useRef } from "react";
-import { Upload } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ScribbleIcon } from "@/components/ui/scribble-icon";
 import { useAppStore } from "@/hooks/store";
 import { compressImage } from "@/hooks/useImageCompression";
 import { toast } from "sonner";
@@ -56,9 +56,9 @@ export function UploadCard() {
 
   if (imageBase64) {
     return (
-      <Card className="w-full max-w-lg mx-auto border-accent-200">
-        <CardContent className="flex items-center gap-4 p-6">
-          <div className="relative w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 ring-2 ring-accent-300">
+      <Card className="w-full max-w-lg mx-auto tilt-l">
+        <CardContent className="flex items-center gap-4 p-5">
+          <div className="relative w-20 h-20 wobble-sm overflow-hidden flex-shrink-0 pencil-border">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`data:image/jpeg;base64,${imageBase64}`}
@@ -67,16 +67,18 @@ export function UploadCard() {
             />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-ink truncate">Image ready</p>
-            <p className="text-xs text-ink-muted mt-0.5 font-mono">Compressed & optimized</p>
+            <p className="text-base font-display font-bold text-pencil">Photo ready</p>
+            <p className="text-xs text-pencil-muted mt-0.5 font-mono">Compressed & optimized</p>
           </div>
           <Button
-            variant="ghost"
+            variant="secondary"
             size="sm"
             onClick={() => {
               useAppStore.getState().clearImage();
             }}
+            className="gap-1.5"
           >
+            <ScribbleIcon name="trash" className="w-4 h-4" strokeWidth={2.2} />
             Remove
           </Button>
         </CardContent>
@@ -86,24 +88,24 @@ export function UploadCard() {
 
   return (
     <Card
-      className="w-full max-w-lg mx-auto border-dashed border-line hover:border-accent-400 hover:bg-accent-50/40 transition-all duration-200 cursor-pointer"
+      className="w-full max-w-lg mx-auto dashed-border bg-surface hover:bg-postit/30 hover:border-marker transition-all duration-150 cursor-pointer tilt-r"
       onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
       onDrop={handleDrop}
       onClick={() => inputRef.current?.click()}
     >
-      <CardContent className="flex flex-col items-center justify-center py-12 gap-4">
-        <div className="w-16 h-16 rounded-2xl bg-accent-50 border border-accent-100 flex items-center justify-center">
-          <Upload className="w-8 h-8 text-accent-600" />
+      <CardContent className="flex flex-col items-center justify-center py-14 gap-5">
+        <div className="wobble-sm bg-paper-aged pencil-border p-4 hard-shadow-sm">
+          <ScribbleIcon name="upload" className="w-9 h-9 stroke-marker" strokeWidth={2.2} />
         </div>
         <div className="text-center">
-          <p className="text-base font-medium text-ink">
-            Upload your photo
+          <p className="text-xl font-display font-bold text-pencil">
+            Drop your photo here
           </p>
-          <p className="text-sm text-ink-soft mt-1">
-            Drag & drop or click to browse
+          <p className="text-base text-pencil-soft font-body mt-1">
+            or click to browse
           </p>
-          <p className="text-xs text-ink-muted mt-2 font-mono">
-            JPEG, PNG, or WebP — max 15MB
+          <p className="text-xs text-pencil-muted mt-3 font-mono">
+            JPEG · PNG · WebP — max 15MB
           </p>
         </div>
         <input
