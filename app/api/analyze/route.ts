@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ProviderRouter } from "@/providers";
 
 
-export const maxDuration = 180;
+export const maxDuration = 60;
 export const runtime = "nodejs";
 
 const MAX_SIZE = 15 * 1024 * 1024; // 15MB

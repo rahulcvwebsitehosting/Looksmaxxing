@@ -4,7 +4,7 @@ import { extractJsonFromResponse } from "@/lib/index";
 import type { VisionProvider } from "./types";
 import type { AnalysisResult } from "@/types";
 
-const REQUEST_TIMEOUT_MS = 22_000;
+const REQUEST_TIMEOUT_MS = 16_000;
 
 export class GeminiProvider implements VisionProvider {
   readonly name = "gemini";

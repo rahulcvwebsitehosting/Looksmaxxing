@@ -5,7 +5,7 @@ import type { VisionProvider } from "./types";
 import type { AnalysisResult } from "@/types";
 import { ProviderError } from "./gemini";
 
-const REQUEST_TIMEOUT_MS = 22_000;
+const REQUEST_TIMEOUT_MS = 16_000;
 
 export class NvidiaProvider implements VisionProvider {
   readonly name = "nvidia";
