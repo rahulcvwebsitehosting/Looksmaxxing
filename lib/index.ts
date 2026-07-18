@@ -67,14 +67,14 @@ export function formatConfidence(value: number): string {
 
 export function scoreToColor(score: number): string {
   if (score >= 8) return "text-emerald-400";
-  if (score >= 6) return "text-blue-400";
+  if (score >= 6) return "text-iris-400";
   if (score >= 4) return "text-amber-400";
   return "text-red-400";
 }
 
 export function scoreToBgColor(score: number): string {
   if (score >= 8) return "bg-emerald-500";
-  if (score >= 6) return "bg-blue-500";
+  if (score >= 6) return "bg-iris-500";
   if (score >= 4) return "bg-amber-500";
   return "bg-red-500";
 }
@@ -88,6 +88,6 @@ export function difficultyColor(difficulty: string): string {
     case "hard":
       return "text-red-400 bg-red-500/10 border-red-500/20";
     default:
-      return "text-zinc-400 bg-zinc-500/10 border-zinc-500/20";
+      return "text-ink-300 bg-white/[0.04] border-white/10";
   }
 }

@@ -4,18 +4,20 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/index";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-2xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-2xl text-sm font-medium font-sans transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-violet-600 text-white shadow-lg shadow-violet-600/25 hover:bg-violet-500 hover:shadow-violet-500/30",
+          "bg-brand-600 text-white shadow-soft hover:bg-brand-500 hover:shadow-glow active:scale-[0.98]",
         secondary:
-          "bg-zinc-800 text-zinc-200 border border-zinc-700/50 hover:bg-zinc-700 hover:border-zinc-600",
-        ghost: "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50",
-        destructive: "bg-red-600 text-white hover:bg-red-500",
+          "glass text-ink-100 hover:bg-white/[0.08] hover:border-white/20 active:scale-[0.98]",
+        ghost:
+          "text-ink-300 hover:text-ink-100 hover:bg-white/[0.04] active:scale-[0.98]",
+        destructive:
+          "bg-red-600 text-white hover:bg-red-500 shadow-soft active:scale-[0.98]",
         outline:
-          "border border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100",
+          "border border-white/10 text-ink-100 hover:bg-white/[0.06] hover:border-white/20 active:scale-[0.98]",
       },
       size: {
         default: "h-11 px-6 py-3",

@@ -32,7 +32,6 @@ export function AnalyzeButton() {
     setCurrentProvider,
     setResult,
     setError,
-    result,
     error,
   } = useAppStore();
 
@@ -45,7 +44,7 @@ export function AnalyzeButton() {
     if (status === "analyzing" && intervalRef.current === null) {
       intervalRef.current = window.setInterval(() => {
         setMessageIdx((prev) => (prev + 1) % LOADING_MESSAGES.length);
-        setProgress(Math.min(progress + 8, 90));
+        setProgress((p) => Math.min(p + 8, 90));
       }, 1200);
     }
     if (status !== "analyzing" && intervalRef.current !== null) {
@@ -54,15 +53,31 @@ export function AnalyzeButton() {
     }
     return () => {
       if (intervalRef.current !== null) clearInterval(intervalRef.current);
+    };
+  }, [status, setProgress]);
+
+  useEffect(() => {
+    return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       if (abortControllerRef.current) abortControllerRef.current.abort();
     };
-  }, [status]);
+  }, []);
 
   const handleAnalyze = useCallback(async () => {
     if (!imageBase64) {
       toast.error("Please upload or capture an image first.");
       return;
+    }
+
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
 
     setStatus("analyzing");
@@ -71,10 +86,10 @@ export function AnalyzeButton() {
     setError(null);
     setResult(null);
 
-      const controller = new AbortController();
-      abortControllerRef.current = controller;
-      const timeout = setTimeout(() => controller.abort(), 120_000);
-      timeoutRef.current = timeout;
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+    const timeout = setTimeout(() => controller.abort(), 120_000);
+    timeoutRef.current = timeout;
 
     try {
       const fileToSend = imageFile || new File([], "capture.jpg", { type: "image/jpeg" });
@@ -114,29 +129,29 @@ export function AnalyzeButton() {
       if (err instanceof DOMException && err.name === "AbortError") {
         msg = "Request timed out. Our AI models are taking longer than expected — please try again.";
       }
-       setError(msg);
-       setProgress(0);
-       toast.error(msg);
-     }
-
-     // Cleanup on completion/error
-     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-     abortControllerRef.current = null;
-     timeoutRef.current = null;
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+      abortControllerRef.current = null;
+    }
   }, [imageBase64, imageFile, setStatus, setProgress, setCurrentProvider, setResult, setError]);
 
   if (status === "analyzing") {
 
     const models = [
-      { name: "Gemini", active: !useAppStore.getState().currentProvider || useAppStore.getState().currentProvider === "gemini" },
-      { name: "Ollama", active: useAppStore.getState().currentProvider === "ollama" },
-      { name: "NVIDIA", active: useAppStore.getState().currentProvider === "nvidia" },
+      { name: "Gemini", active: !currentProvider || currentProvider === "gemini" },
+      { name: "Ollama", active: currentProvider === "ollama" },
+      { name: "NVIDIA", active: currentProvider === "nvidia" },
     ];
     return (
-      <Card className="w-full max-w-lg mx-auto border-violet-800/30 overflow-hidden">
-        <div className="h-1 bg-zinc-800">
+      <Card className="w-full max-w-lg mx-auto border-brand-500/20 overflow-hidden">
+        <div className="h-1 bg-white/[0.06]">
           <motion.div
-            className="h-full bg-gradient-to-r from-violet-600 via-purple-500 to-pink-500"
+            className="h-full bg-gradient-to-r from-brand-500 via-iris-500 to-flush-500"
             initial={{ width: "0%" }}
             animate={{ width: `${Math.min(progress, 90)}%` }}
             transition={{ duration: 0.5 }}
@@ -153,10 +168,10 @@ export function AnalyzeButton() {
                   scale: model.active ? 1 : 0.85,
                 }}
                 transition={{ delay: i * 0.2, duration: 0.4 }}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium border ${
+                className={`px-3 py-1.5 rounded-full text-xs font-medium border font-mono ${
                   model.active
-                    ? "bg-violet-600/20 border-violet-500/40 text-violet-300"
-                    : "bg-zinc-800/50 border-zinc-700/30 text-zinc-500"
+                    ? "bg-brand-600/20 border-brand-500/40 text-brand-300"
+                    : "bg-white/[0.04] border-white/10 text-ink-400"
                 }`}
               >
                 {model.name}
@@ -167,18 +182,18 @@ export function AnalyzeButton() {
               animate={{ opacity: [0, 1, 0] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
             >
-              <Loader2 className="w-4 h-4 text-violet-400 animate-spin" />
+              <Loader2 className="w-4 h-4 text-brand-400 animate-spin" />
             </motion.div>
           </div>
 
           <div className="relative">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-violet-600/20 via-purple-600/10 to-pink-600/20 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full bg-violet-600/10 flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-violet-300" />
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-brand-600/20 via-iris-600/10 to-flush-500/20 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-brand-600/10 flex items-center justify-center">
+                <Sparkles className="w-8 h-8 text-brand-300" />
               </div>
             </div>
             <motion.div
-              className="absolute -inset-2 rounded-full border-2 border-violet-500/20"
+              className="absolute -inset-2 rounded-full border-2 border-brand-500/20"
               animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.1, 0.3] }}
               transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
             />
@@ -192,15 +207,15 @@ export function AnalyzeButton() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.3 }}
-                className="text-base font-medium text-zinc-200"
+                className="text-base font-medium text-ink-100"
               >
                 {LOADING_MESSAGES[messageIdx]}
               </motion.p>
             </AnimatePresence>
-            <p className="text-xs text-zinc-500">
-               {useAppStore.getState().currentProvider
-                 ? `Analysis in progress...`
-                 : "Waking up AI models..."}
+            <p className="text-xs text-ink-400 font-mono">
+              {currentProvider
+                ? `Analysis in progress...`
+                : "Waking up AI models..."}
             </p>
             <Progress
               value={progress}
@@ -214,9 +229,9 @@ export function AnalyzeButton() {
 
   if (status === "error") {
     return (
-      <Card className="w-full max-w-lg mx-auto border-red-800/30">
+      <Card className="w-full max-w-lg mx-auto border-red-500/20">
         <CardContent className="flex flex-col items-center gap-4 py-8">
-          <div className="w-16 h-16 rounded-2xl bg-red-600/10 flex items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-red-600/10 border border-red-500/20 flex items-center justify-center">
             <AlertCircle className="w-8 h-8 text-red-400" />
           </div>
           <p className="text-sm text-red-400 text-center">{error}</p>

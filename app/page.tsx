@@ -79,10 +79,10 @@ const faqs = [
 ];
 
 const exampleCards = [
-  { label: "Overall Score", value: "7.8/10", color: "text-violet-400" },
+  { label: "Overall Score", value: "7.8/10", color: "text-brand-400" },
   { label: "Symmetry", value: "8.2/10", color: "text-emerald-400" },
   { label: "Skin Quality", value: "6.5/10", color: "text-amber-400" },
-  { label: "Potential", value: "9.1/10", color: "text-fuchsia-400" },
+  { label: "Potential", value: "9.1/10", color: "text-flush-400" },
 ];
 
 const container = {
@@ -101,14 +101,16 @@ const item = {
 export default function HomePage() {
   return (
     <div className="flex-1">
-      {/* Navigation */}
-      <header className="sticky top-0 z-50 border-b border-zinc-800/50 bg-zinc-950/80 backdrop-blur-xl">
+      {/* Navigation — Glassmorphism sticky header */}
+      <header className="sticky top-0 z-50 glass-strong border-b border-white/[0.06]">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-flush-500 flex items-center justify-center shadow-glow">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg font-bold text-zinc-100">LooksMax AI</span>
+            <span className="text-lg font-bold text-ink-100 font-display tracking-tight">
+              LooksMax AI
+            </span>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/analyze">
@@ -118,29 +120,40 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero — Modern Dark Cinema with ambient blobs */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-900/20 via-zinc-950 to-zinc-950" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full bg-violet-600/5 blur-3xl pointer-events-none" />
+        {/* Ambient blob gradients — slow oscillation */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute top-[-10%] left-[10%] w-[520px] h-[520px] rounded-full bg-brand-600/12 blur-[120px] animate-blob" />
+          <div
+            className="absolute top-[5%] right-[5%] w-[420px] h-[420px] rounded-full bg-flush-500/10 blur-[110px] animate-blob"
+            style={{ animationDelay: "-6s" }}
+          />
+          <div
+            className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[440px] h-[440px] rounded-full bg-iris-600/12 blur-[120px] animate-blob"
+            style={{ animationDelay: "-12s" }}
+          />
+        </div>
 
-        <div className="relative max-w-4xl mx-auto px-6 pt-24 pb-20 text-center">
+        {/* Mesh-tint base */}
+        <div className="absolute inset-0 bg-mesh-brand opacity-60" />
+
+        <div className="relative max-w-4xl mx-auto px-6 pt-28 pb-24 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-600/10 border border-violet-600/20 text-sm text-violet-400 mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-brand-300 mb-8">
               <Sparkles className="w-4 h-4" />
               AI-Powered Facial Analysis
             </div>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-zinc-100 leading-[1.1]">
+            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-ink-100 leading-[1.05]">
               Discover Your
               <br />
-              <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-violet-400 bg-clip-text text-transparent">
-                Facial Potential
-              </span>
+              <span className="text-gradient-brand">Facial Potential</span>
             </h1>
-            <p className="mt-6 text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-7 text-lg text-ink-300 max-w-2xl mx-auto leading-relaxed">
               AI-powered facial analysis and looksmaxxing recommendations. Upload a photo
               or use your camera to get a comprehensive report on your facial features,
               symmetry, and personalized improvement suggestions.
@@ -161,15 +174,15 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <p className="mt-4 text-xs text-zinc-600">
+            <p className="mt-5 text-xs text-ink-400 font-mono tracking-wide">
               No sign-up required. Images are never stored.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Example Cards */}
-      <section className="max-w-4xl mx-auto px-6 -mt-8 pb-16">
+      {/* Example Cards — Bento-pop stat row */}
+      <section className="max-w-4xl mx-auto px-6 -mt-10 pb-16">
         <motion.div
           variants={container}
           initial="hidden"
@@ -179,10 +192,14 @@ export default function HomePage() {
         >
           {exampleCards.map((card) => (
             <motion.div key={card.label} variants={item}>
-              <Card className="border-zinc-800 text-center">
+              <Card className="text-center hover:scale-[1.02] hover:border-white/15">
                 <CardContent className="py-5">
-                  <p className="text-xs text-zinc-500 mb-1">{card.label}</p>
-                  <p className={`text-2xl font-bold ${card.color}`}>{card.value}</p>
+                  <p className="text-xs text-ink-400 mb-1 font-mono uppercase tracking-wider">
+                    {card.label}
+                  </p>
+                  <p className={`text-2xl font-bold font-display ${card.color}`}>
+                    {card.value}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -190,7 +207,7 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      {/* Features */}
+      {/* Features — Bento Box Grid */}
       <section className="max-w-6xl mx-auto px-6 pb-24">
         <motion.div
           initial={{ opacity: 0 }}
@@ -198,10 +215,10 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-zinc-100">
+          <h2 className="text-3xl sm:text-4xl font-bold text-ink-100 font-display">
             Everything you need
           </h2>
-          <p className="mt-3 text-zinc-400 max-w-lg mx-auto">
+          <p className="mt-3 text-ink-300 max-w-lg mx-auto">
             Comprehensive analysis, actionable recommendations, and complete privacy.
           </p>
         </motion.div>
@@ -215,12 +232,12 @@ export default function HomePage() {
         >
           {features.map((feat) => (
             <motion.div key={feat.title} variants={item}>
-              <Card className="border-zinc-800 h-full hover:border-violet-800/30 transition-colors">
+              <Card className="h-full hover:border-brand-400/30 hover:shadow-glow hover:scale-[1.02]">
                 <CardHeader>
-                  <div className="w-10 h-10 rounded-xl bg-violet-600/10 flex items-center justify-center mb-3">
-                    <feat.icon className="w-5 h-5 text-violet-400" />
+                  <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-600/20 to-flush-500/15 border border-brand-500/20 flex items-center justify-center mb-3">
+                    <feat.icon className="w-5 h-5 text-brand-300" />
                   </div>
-                  <CardTitle className="text-base">{feat.title}</CardTitle>
+                  <CardTitle className="text-base font-display">{feat.title}</CardTitle>
                   <CardDescription className="text-sm leading-relaxed">
                     {feat.desc}
                   </CardDescription>
@@ -239,7 +256,7 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-zinc-100">
+          <h2 className="text-3xl sm:text-4xl font-bold text-ink-100 font-display">
             Frequently Asked Questions
           </h2>
         </motion.div>
@@ -253,12 +270,12 @@ export default function HomePage() {
         >
           {faqs.map((faq, i) => (
             <motion.div key={i} variants={item}>
-              <Card className="border-zinc-800">
+              <Card className="hover:border-white/15">
                 <CardHeader>
-                  <CardTitle className="text-base text-zinc-200">
+                  <CardTitle className="text-base text-ink-100 font-display">
                     {faq.q}
                   </CardTitle>
-                  <CardDescription className="text-sm leading-relaxed text-zinc-400">
+                  <CardDescription className="text-sm leading-relaxed text-ink-300">
                     {faq.a}
                   </CardDescription>
                 </CardHeader>
@@ -269,16 +286,16 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-800/50 py-12">
+      <footer className="border-t border-white/[0.06] py-12">
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-500 to-flush-500 flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
-            <span className="text-sm font-semibold text-zinc-300">LooksMax AI</span>
+            <span className="text-sm font-semibold text-ink-100 font-display">LooksMax AI</span>
           </div>
 
-          <p className="text-xs text-zinc-600 text-center">
+          <p className="text-xs text-ink-400 text-center font-mono">
             AI-generated aesthetic opinions, not scientific facts. Images are never stored.
           </p>
 
@@ -287,7 +304,7 @@ export default function HomePage() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-zinc-500 hover:text-zinc-300 transition-colors"
+              className="text-ink-400 hover:text-ink-100 transition-colors"
             >
               <Code className="w-5 h-5" />
             </a>
@@ -295,7 +312,7 @@ export default function HomePage() {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-zinc-500 hover:text-zinc-300 transition-colors"
+              className="text-ink-400 hover:text-ink-100 transition-colors"
             >
               <MessageCircle className="w-5 h-5" />
             </a>

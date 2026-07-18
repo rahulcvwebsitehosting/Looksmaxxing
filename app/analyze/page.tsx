@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback, Suspense } from "react";
+import { useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowLeft, Camera, Upload } from "lucide-react";
@@ -15,7 +15,7 @@ import Link from "next/link";
 function AnalyzePage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { status, result, imageBase64, setStatus } = useAppStore();
+  const { status, result, imageBase64 } = useAppStore();
 
   useEffect(() => {
     const cameraParam = searchParams.get("camera");
@@ -23,10 +23,6 @@ function AnalyzePage() {
       // Let the CameraCard component handle activation
     }
   }, [searchParams, imageBase64]);
-
-  const handleStartOver = useCallback(() => {
-    useAppStore.getState().reset();
-  }, []);
 
   // Show dashboard when analysis is complete
   if (status === "complete" && result) {
@@ -56,14 +52,14 @@ function AnalyzePage() {
         transition={{ duration: 0.5 }}
         className="text-center mb-10"
       >
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-600/10 border border-violet-600/20 text-sm text-violet-400 mb-4">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-brand-300 mb-4">
           <Sparkles className="w-4 h-4" />
           AI Analysis
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-zinc-100 mb-3">
+        <h1 className="text-3xl sm:text-4xl font-bold text-ink-100 font-display mb-3">
           Analyze Your Look
         </h1>
-        <p className="text-zinc-400 max-w-md mx-auto text-sm sm:text-base">
+        <p className="text-ink-300 max-w-md mx-auto text-sm sm:text-base">
           Upload a photo or use your camera. Our AI will analyze your facial features
           and provide personalized looksmaxxing recommendations.
         </p>
