@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { ProviderRouter } from "@/providers";
 
+export const maxDuration = 30;
+export const runtime = "nodejs";
+
 export async function GET() {
   try {
     const router = new ProviderRouter();

@@ -4,7 +4,7 @@ import { extractJsonFromResponse } from "@/lib/index";
 import type { VisionProvider } from "./types";
 import type { AnalysisResult } from "@/types";
 
-const REQUEST_TIMEOUT_MS = 12_000;
+const REQUEST_TIMEOUT_MS = 22_000;
 
 export class GeminiProvider implements VisionProvider {
   readonly name = "gemini";
@@ -70,10 +70,13 @@ export class GeminiProvider implements VisionProvider {
     };
 
     const controller = new AbortController();
+    const onParentAbort = () => controller.abort();
     const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
-    if (signal) {
-      signal.addEventListener("abort", () => controller.abort(), { once: true });
+    if (signal?.aborted) {
+      controller.abort();
+    } else if (signal) {
+      signal.addEventListener("abort", onParentAbort, { once: true });
     }
 
     try {
@@ -103,15 +106,37 @@ export class GeminiProvider implements VisionProvider {
       }
 
       const jsonStr = extractJsonFromResponse(rawText);
-      const parsed = JSON.parse(jsonStr);
-      return analysisResultSchema.parse(parsed);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(jsonStr);
+      } catch {
+        throw new ProviderError("Gemini: Malformed JSON in model response", 500);
+      }
+      try {
+        return analysisResultSchema.parse(parsed);
+      } catch (err) {
+        const detail = err instanceof Error ? err.message.substring(0, 300) : "schema mismatch";
+        throw new ProviderError(`Gemini: Response failed schema validation: ${detail}`, 500);
+      }
     } catch (err) {
       if (controller.signal.aborted) {
-        throw new ProviderError("Gemini: Request timed out", 504);
+        throw new ProviderError(
+          signal?.aborted
+            ? "Gemini: Request cancelled by upstream caller"
+            : "Gemini: Request timed out",
+          504
+        );
       }
-      throw err;
+      if (err instanceof ProviderError) throw err;
+      throw new ProviderError(
+        `Gemini: ${err instanceof Error ? err.message : "Unexpected error"}`,
+        500
+      );
     } finally {
       clearTimeout(timeout);
+      if (signal) {
+        signal.removeEventListener("abort", onParentAbort);
+      }
     }
   }
 }

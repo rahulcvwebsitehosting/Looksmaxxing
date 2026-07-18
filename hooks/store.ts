@@ -20,9 +20,10 @@ interface AppState {
   setImage: (base64: string, file: File) => void;
   setImageFromCamera: (base64: string) => void;
   setStatus: (status: AppState["status"]) => void;
-  setProgress: (progress: number) => void;
+  setProgress: (progress: number | ((prev: number) => number)) => void;
   setCurrentProvider: (provider: string) => void;
   setResult: (result: AnalysisResult | null) => void;
+  clearResult: () => void;
   setError: (error: string | null) => void;
   setProviderStatuses: (statuses: AppState["providerStatuses"]) => void;
   reset: () => void;
@@ -63,9 +64,19 @@ export const useAppStore = create<AppState>((set) => ({
     }),
 
   setStatus: (status) => set({ status }),
-  setProgress: (progress) => set({ progress }),
+  setProgress: (progress) =>
+    set((state) => ({
+      progress:
+        typeof progress === "function" ? progress(state.progress) : progress,
+    })),
   setCurrentProvider: (provider) => set({ currentProvider: provider }),
-  setResult: (result) => set({ result, status: "complete" }),
+  setResult: (result) =>
+    set(
+      result === null
+        ? { result: null }
+        : { result, status: "complete" as const }
+    ),
+  clearResult: () => set({ result: null, status: "idle" as const }),
   setError: (error) => set({ error, status: "error" }),
   setProviderStatuses: (statuses) => set({ providerStatuses: statuses }),
 

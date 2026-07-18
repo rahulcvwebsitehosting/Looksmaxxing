@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { ProviderRouter } from "@/providers";
 
 
+export const maxDuration = 180;
+export const runtime = "nodejs";
+
 const MAX_SIZE = 15 * 1024 * 1024; // 15MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"];
 
@@ -34,11 +37,7 @@ export async function POST(req: NextRequest) {
     }
 
     const arrayBuffer = await imageFile.arrayBuffer();
-    const base64 = btoa(
-      Array.from(new Uint8Array(arrayBuffer))
-        .map((b) => String.fromCharCode(b))
-        .join("")
-    );
+    const base64 = Buffer.from(arrayBuffer).toString("base64");
 
     const router = new ProviderRouter();
     const { result, providerUsed } = await router.analyze(base64, imageFile.type);
@@ -49,8 +48,13 @@ export async function POST(req: NextRequest) {
       provider: providerUsed,
     });
   } catch (err) {
-    console.error("[analyze] Error:", err instanceof Error ? err.message : err);
-    const message = err instanceof Error ? "Analysis failed. Please try again." : "Internal server error";
+    const detail = err instanceof Error ? err.message : "Internal server error";
+    console.error("[analyze] Error:", detail);
+    const message = err instanceof Error
+      ? detail.includes("All AI providers")
+        ? detail
+        : "Analysis failed. Please try again."
+      : "Internal server error";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

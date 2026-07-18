@@ -154,7 +154,7 @@ export function AnalyzeButton() {
           <motion.div
             className="h-full bg-accent-600"
             initial={{ width: "0%" }}
-            animate={{ width: `${Math.min(progress, 90)}%` }}
+            animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5 }}
           />
         </div>

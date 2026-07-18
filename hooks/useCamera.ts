@@ -62,7 +62,6 @@ export function useCamera({ onCapture }: UseCameraOptions) {
     stopCamera();
     const newMode = facingMode === "user" ? "environment" : "user";
     setFacingMode(newMode);
-    // Wait for state to propagate before re-acquiring stream
     await new Promise((r) => setTimeout(r, 50));
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -73,6 +72,10 @@ export function useCamera({ onCapture }: UseCameraOptions) {
         },
       });
       streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play().catch(() => {});
+      }
       setIsActive(true);
     } catch (err) {
       const msg =
@@ -101,12 +104,7 @@ export function useCamera({ onCapture }: UseCameraOptions) {
         canvas.height = video.videoHeight;
         const ctx = canvas.getContext("2d")!;
 
-        if (facingMode === "user") {
-          ctx.translate(canvas.width, 0);
-          ctx.scale(-1, 1);
-        }
-
-        ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         const MAX_EDGE = 1024;
         let { width, height } = canvas;
@@ -131,7 +129,7 @@ export function useCamera({ onCapture }: UseCameraOptions) {
         stopCamera();
       }
     }, 1000);
-  }, [onCapture, facingMode, stopCamera]);
+  }, [onCapture, stopCamera]);
 
   return {
     videoRef,

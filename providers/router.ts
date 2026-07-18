@@ -4,8 +4,9 @@ import { GeminiProvider, ProviderError } from "./gemini";
 import { OllamaProvider } from "./ollama";
 import { NvidiaProvider } from "./nvidia";
 
-const RETRIABLE_STATUS_CODES = new Set([429, 500]);
+const RETRIABLE_STATUS_CODES = new Set([429, 500, 503]);
 const RETRY_DELAY_MS = 1_000;
+const PER_PROVIDER_TIMEOUT_MS = 25_000;
 
 export class ProviderRouter {
   private providers: VisionProvider[] = [];
@@ -15,7 +16,7 @@ export class ProviderRouter {
   }
 
   private initializeProviders(): void {
-    const order = process.env.AI_PROVIDER_ORDER || "gemini,ollama,nvidia";
+    const order = process.env.AI_PROVIDER_ORDER || "nvidia,gemini,ollama";
     const names = order.split(",").map((s) => s.trim().toLowerCase());
 
     const registry: Record<string, () => VisionProvider> = {
@@ -41,10 +42,11 @@ export class ProviderRouter {
   }
 
   async analyze(imageBase64: string, mimeType: string): Promise<{ result: AnalysisResult; providerUsed: string }> {
+    const errors: string[] = [];
     for (const provider of this.providers) {
       for (let attempt = 0; attempt < 2; attempt++) {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 20_000);
+        const timeout = setTimeout(() => controller.abort(), PER_PROVIDER_TIMEOUT_MS);
         try {
           const result = await provider.analyze(imageBase64, mimeType, controller.signal);
           clearTimeout(timeout);
@@ -58,8 +60,11 @@ export class ProviderRouter {
               await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
               continue;
             }
+            errors.push(`${provider.name}: ${err.message}`);
             console.warn(`[ProviderRouter] ${provider.name} failed: ${err.message}`);
           } else {
+            const msg = err instanceof Error ? err.message : String(err);
+            errors.push(`${provider.name}: ${msg}`);
             console.warn(`[ProviderRouter] ${provider.name} failed with unexpected error:`, err);
           }
           break;
@@ -67,7 +72,9 @@ export class ProviderRouter {
       }
     }
 
-    throw new Error("All AI providers are currently unavailable. Please try again later.");
+    throw new Error(
+      `All AI providers are currently unavailable. Please try again later. Details: ${errors.join(" | ")}`
+    );
   }
 
   async getProviderStatuses(): Promise<Array<{ provider: string; available: boolean; latency: number; lastChecked: number }>> {
