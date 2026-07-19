@@ -3,6 +3,7 @@
 import { useAppStore } from "@/hooks/store";
 import { Button } from "@/components/ui/button";
 import { ScribbleIcon } from "@/components/ui/scribble-icon";
+import { FaceScanAnimation } from "@/components/input/face-scan-animation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
@@ -144,16 +145,16 @@ export function AnalyzeButton() {
       { name: "NVIDIA", active: currentProvider === "nvidia" },
     ];
     return (
-      <Card className="w-full max-w-lg mx-auto tilt-l">
-        <CardContent className="flex flex-col items-center gap-6 py-10">
+      <Card className="w-full max-w-lg mx-auto border-blue-500/30 bg-slate-950/40 backdrop-blur-sm">
+        <CardContent className="flex flex-col items-center gap-8 py-10">
           <div className="flex items-center gap-2 flex-wrap justify-center">
             {models.map((model) => (
               <div
                 key={model.name}
-                className={`px-3 py-1.5 wobble-sm text-xs font-display font-bold border font-mono ${
+                className={`px-3 py-1.5 rounded-full text-xs font-mono font-semibold border transition-all ${
                   model.active
-                    ? "bg-postit pencil-border text-pencil hard-shadow-sm"
-                    : "bg-surface pencil-border text-pencil-muted opacity-60"
+                    ? "bg-blue-500/20 border-blue-400/50 text-blue-300 shadow-lg shadow-blue-500/20"
+                    : "bg-slate-800/50 border-slate-700/50 text-slate-500 opacity-50"
                 }`}
               >
                 {model.name}
@@ -161,11 +162,11 @@ export function AnalyzeButton() {
             ))}
           </div>
 
-          <div className="relative">
-            <div className="w-24 h-24 wobble-md bg-paper-aged pencil-border flex items-center justify-center hard-shadow-sm animate-jiggle">
-              <ScribbleIcon name="spark" className="w-9 h-9 stroke-marker" strokeWidth={2.4} />
-            </div>
-          </div>
+          <FaceScanAnimation
+            imageBase64={imageBase64 || ""}
+            messageIdx={messageIdx}
+            messages={LOADING_MESSAGES}
+          />
 
           <div className="text-center space-y-2 w-full max-w-sm">
             <AnimatePresence mode="wait">
@@ -175,12 +176,12 @@ export function AnalyzeButton() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.3 }}
-                className="text-lg font-display font-bold text-pencil"
+                className="text-sm font-mono text-blue-300"
               >
                 {LOADING_MESSAGES[messageIdx]}
               </motion.p>
             </AnimatePresence>
-            <p className="text-xs text-pencil-muted font-mono">
+            <p className="text-xs text-slate-500 font-mono">
               {currentProvider ? `Analysis in progress...` : "Waking up AI models..."}
             </p>
             <Progress value={progress} className="mt-3" />
