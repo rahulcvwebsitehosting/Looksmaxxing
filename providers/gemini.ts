@@ -64,7 +64,7 @@ export class GeminiProvider implements VisionProvider {
         temperature: 0.4,
         topP: 0.95,
         topK: 40,
-        maxOutputTokens: 16384,
+        maxOutputTokens: 4096,
         responseMimeType: "application/json",
       },
     };

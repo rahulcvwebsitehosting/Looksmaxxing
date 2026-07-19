@@ -59,7 +59,7 @@ export class NvidiaProvider implements VisionProvider {
         },
       ],
       temperature: 0.4,
-      max_tokens: 16384,
+      max_tokens: 4096,
       response_format: { type: "json_object" },
     };
 

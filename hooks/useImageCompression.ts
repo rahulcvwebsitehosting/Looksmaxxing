@@ -103,7 +103,7 @@ export async function compressImage(
   }
 
   const img = await loadImage(processedFile);
-  const { width, height } = resizeDims(img.width, img.height, 1024);
+  const { width, height } = resizeDims(img.width, img.height, 768);
 
   const canvas = document.createElement("canvas");
   canvas.width = width;

@@ -106,7 +106,7 @@ export function useCamera({ onCapture }: UseCameraOptions) {
 
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        const MAX_EDGE = 1024;
+        const MAX_EDGE = 768;
         let { width, height } = canvas;
         if (width > MAX_EDGE || height > MAX_EDGE) {
           if (width > height) {
