@@ -59,7 +59,7 @@ export class OllamaProvider implements VisionProvider {
         },
       ],
       temperature: 0.4,
-      max_tokens: 4096,
+      max_tokens: 2500,
       response_format: { type: "json_object" },
     };
 
