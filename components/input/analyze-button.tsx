@@ -78,11 +78,11 @@ export function AnalyzeButton() {
       intervalRef.current = null;
     }
 
+    clearResult();
     setStatus("analyzing");
     setProgress(0);
     setCurrentProvider("");
     setError(null);
-    clearResult();
 
     const controller = new AbortController();
     abortControllerRef.current = controller;

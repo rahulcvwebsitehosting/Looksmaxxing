@@ -76,7 +76,7 @@ export const useAppStore = create<AppState>((set) => ({
         ? { result: null }
         : { result, status: "complete" as const }
     ),
-  clearResult: () => set({ result: null, status: "idle" as const }),
+  clearResult: () => set({ result: null }),
   setError: (error) => set({ error, status: "error" }),
   setProviderStatuses: (statuses) => set({ providerStatuses: statuses }),
 
