@@ -12,21 +12,34 @@ export function getLandmarker(): Promise<FaceLandmarker> {
   if (!instance) {
     instance = (async () => {
       const fileset = await FilesetResolver.forVisionTasks("/mediapipe/wasm");
-      return FaceLandmarker.createFromOptions(fileset, {
-        baseOptions: {
-          modelAssetPath: "/mediapipe/face_landmarker.task",
-          delegate: "GPU",
-        },
-        runningMode: "IMAGE",
-        // 2 so we can DETECT a second face and refuse, rather than silently
-        // scoring whichever face the model liked more.
-        numFaces: 2,
-        outputFaceBlendshapes: true,
-        outputFacialTransformationMatrixes: true,
-        minFaceDetectionConfidence: 0.5,
-      });
+      try {
+        return await FaceLandmarker.createFromOptions(fileset, {
+          baseOptions: {
+            modelAssetPath: "/mediapipe/face_landmarker.task",
+            delegate: "GPU",
+          },
+          runningMode: "IMAGE",
+          numFaces: 2,
+          outputFaceBlendshapes: true,
+          outputFacialTransformationMatrixes: true,
+          minFaceDetectionConfidence: 0.5,
+        });
+      } catch {
+        // GPU delegate failed — fall back to CPU
+        return FaceLandmarker.createFromOptions(fileset, {
+          baseOptions: {
+            modelAssetPath: "/mediapipe/face_landmarker.task",
+            delegate: "CPU",
+          },
+          runningMode: "IMAGE",
+          numFaces: 2,
+          outputFaceBlendshapes: true,
+          outputFacialTransformationMatrixes: true,
+          minFaceDetectionConfidence: 0.5,
+        });
+      }
     })().catch((err) => {
-      instance = null; // allow retry (e.g. GPU delegate failed, transient fetch)
+      instance = null;
       throw err;
     });
   }
