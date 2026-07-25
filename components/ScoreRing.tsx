@@ -22,7 +22,7 @@ export function ScoreRing({
           cy={size / 2}
           r={r}
           fill="none"
-          stroke="rgba(255,255,255,0.08)"
+          stroke="rgba(45,45,45,0.12)"
           strokeWidth={stroke}
         />
         {score !== null && (
@@ -39,8 +39,8 @@ export function ScoreRing({
         )}
         <defs>
           <linearGradient id="ringGold" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#ead0a4" />
-            <stop offset="100%" stopColor="#c9a06b" />
+            <stop offset="0%" stopColor="#ff4d4d" />
+            <stop offset="100%" stopColor="#e53838" />
           </linearGradient>
         </defs>
       </svg>

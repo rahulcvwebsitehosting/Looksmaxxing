@@ -98,14 +98,14 @@ function Sparkline({ values }: { values: number[] }) {
       <polyline
         points={pts.join(" ")}
         fill="none"
-        stroke="#ead0a4"
+        stroke="#ff4d4d"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       {pts.map((p, i) => {
         const [x, y] = p.split(",").map(Number);
-        return <circle key={i} cx={x} cy={y} r="3" fill="#c9a06b" />;
+        return <circle key={i} cx={x} cy={y} r="3" fill="#e53838" />;
       })}
     </svg>
   );

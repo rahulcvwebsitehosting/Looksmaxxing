@@ -309,7 +309,7 @@ export function ScanSequence({
               className="pointer-events-none absolute inset-x-0 h-10 fh-scanline"
               style={{
                 background:
-                  "linear-gradient(to bottom, transparent, rgba(234,208,164,0.75) 45%, rgba(234,208,164,0.75) 55%, transparent)",
+                  "linear-gradient(to bottom, transparent, rgba(255,77,77,0.75) 45%, rgba(255,77,77,0.75) 55%, transparent)",
                 filter: "blur(2px)",
               }}
             />
@@ -332,7 +332,7 @@ export function ScanSequence({
                   key={i}
                   d={p.d}
                   fill="none"
-                  stroke="#ead0a4"
+                  stroke="#ff4d4d"
                   strokeWidth="0.35"
                   pathLength={1}
                   strokeDasharray="1"
@@ -348,7 +348,7 @@ export function ScanSequence({
         {/* Score ring (phase D) */}
         {elapsed >= PHASE_D && (
           <div
-            className="absolute inset-0 flex flex-col items-center justify-center bg-bg/55 backdrop-blur-[2px]"
+            className="absolute inset-0 flex flex-col items-center justify-center bg-pencil/20 backdrop-blur-[2px]"
             style={{ opacity: clamp01((elapsed - PHASE_D) / 250) }}
           >
             <div
@@ -359,30 +359,30 @@ export function ScanSequence({
               }}
             >
               <svg width="168" height="168" className="-rotate-90">
-                <circle cx="84" cy="84" r="74" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="10" />
+                <circle cx="84" cy="84" r="74" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="10" />
                 <circle
                   cx="84"
                   cy="84"
                   r="74"
                   fill="none"
-                  stroke="url(#seqGold)"
+                  stroke="url(#seqRed)"
                   strokeWidth="10"
                   strokeLinecap="round"
                   pathLength={100}
                   strokeDasharray="100"
                   strokeDashoffset={100 - shownScore}
-                  style={landed ? { filter: "drop-shadow(0 0 10px rgba(234,208,164,0.6))" } : undefined}
+                  style={landed ? { filter: "drop-shadow(0 0 10px rgba(255,77,77,0.6))" } : undefined}
                 />
                 <defs>
-                  <linearGradient id="seqGold" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#ead0a4" />
-                    <stop offset="100%" stopColor="#c9a06b" />
+                  <linearGradient id="seqRed" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#ff4d4d" />
+                    <stop offset="100%" stopColor="#e53838" />
                   </linearGradient>
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="numeral text-4xl">{shownScore.toFixed(1)}</span>
-                <span className="label-caps">harmony</span>
+                <span className="numeral text-4xl text-white">{shownScore.toFixed(1)}</span>
+                <span className="text-[0.72rem] uppercase tracking-[0.15em] text-white/80 font-medium">harmony</span>
               </div>
             </div>
           </div>
@@ -426,7 +426,7 @@ export function ScanSequence({
 }
 
 function Reticle() {
-  const corner = "absolute h-7 w-7 border-gold-hi/70";
+  const corner = "absolute h-7 w-7 border-white/40";
   return (
     <div className="pointer-events-none absolute inset-3 opacity-60">
       <span className={`${corner} left-0 top-0 border-l-2 border-t-2 rounded-tl-md`} />

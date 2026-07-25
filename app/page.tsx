@@ -102,6 +102,27 @@ export default function Home() {
         Free and open source (AGPL-3.0). Scores are photo-based estimates for
         self-improvement, not clinical measurements.
       </p>
+
+      {/* Credits */}
+      <footer className="card p-5 mt-4 flex flex-col gap-2 text-center tilt-r">
+        <p className="font-display text-base text-pencil">Built by Rahul S</p>
+        <p className="text-xs text-pencil-soft">
+          Web Developer &amp; Full-Stack Engineer
+        </p>
+        <div className="flex items-center justify-center gap-3 text-xs text-pencil-muted">
+          <a href="https://rahulshyam-portfolio.vercel.app/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-marker">
+            Portfolio
+          </a>
+          <span>·</span>
+          <a href="https://github.com/rahulcvwebsitehosting" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-marker">
+            GitHub
+          </a>
+          <span>·</span>
+          <a href="mailto:rahulshyamcv@gmail.com" className="underline underline-offset-2 hover:text-marker">
+            Email
+          </a>
+        </div>
+      </footer>
     </main>
   );
 }
@@ -109,7 +130,7 @@ export default function Home() {
 /** Original golden-spiral motif, drawn from quarter-arcs. */
 function GoldenSpiral({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 100 100" className={className} fill="none" stroke="#ead0a4" strokeWidth="0.5">
+    <svg viewBox="0 0 100 100" className={className} fill="none" stroke="#ff4d4d" strokeWidth="0.5">
       <rect x="2" y="2" width="96" height="96" />
       <line x1="61.3" y1="2" x2="61.3" y2="98" />
       <line x1="2" y1="61.3" x2="61.3" y2="61.3" />

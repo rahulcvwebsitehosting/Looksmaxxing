@@ -241,7 +241,7 @@ export default function ScanPage() {
   );
 }
 
-/** Golden-ratio positioning guide drawn over the live preview. */
+/** Positioning guide drawn over the live preview. */
 function GoldenGuide() {
   return (
     <svg
@@ -249,7 +249,7 @@ function GoldenGuide() {
       className="absolute inset-0 h-full w-full opacity-40 pointer-events-none"
       preserveAspectRatio="none"
     >
-      <g stroke="#ead0a4" strokeWidth="0.3" fill="none">
+      <g stroke="#ff4d4d" strokeWidth="0.3" fill="none">
         <ellipse cx="50" cy="58" rx="24" ry="34" />
         <line x1="50" y1="10" x2="50" y2="115" />
         <line x1="26" y1="45" x2="74" y2="45" />
