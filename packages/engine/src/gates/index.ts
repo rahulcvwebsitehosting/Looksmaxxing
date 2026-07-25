@@ -38,10 +38,10 @@ import { computeJawEdgeSupport } from "../metrics/registry";
 const MIN_IPD_PX = 80;
 const DEGRADE_IPD_PX = 140;
 const MIN_FRAME_PX = 720;
-const YAW_FULL = 6;
-const YAW_DEGRADE = 12;
-const PITCH_FULL = 6;
-const PITCH_DEGRADE = 10;
+const YAW_FULL = 10;
+const YAW_DEGRADE = 16;
+const PITCH_FULL = 12;
+const PITCH_DEGRADE = 18;
 const ROLL_DEGRADE = 12;
 const ROLL_REFUSE = 22;
 // Proxy magnitudes measured on the canonical model at 6° / 12° of yaw.
