@@ -1,0 +1,8 @@
+{
+  "name": "looksmax-workspace",
+  "private": true,
+  "workspaces": [
+    "looksmax-ai",
+    "packages/*"
+  ]
+}

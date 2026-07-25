@@ -1,0 +1,276 @@
+@import "tailwindcss";
+
+/* LooksMax AI — Hand-Drawn Boutique Agency meets FreeHarmony's engine
+   ==================================================
+   Colors: warm paper, pencil-black ink, red marker accent, post-it yellow CTA
+   Fonts: Kalam (display), Patrick Hand (body), JetBrains Mono (data)
+   Shapes: wobbly corners, hard offset shadows, slight rotation
+   No purple/pink. No gradients. No glow. Matte, warm, human, hand-made.
+*/
+
+@theme inline {
+  --color-bg: #fdfbf7;
+  --color-surface: #ffffff;
+  --color-surface-raised: #f5efe2;
+  --color-line: rgba(45, 45, 45, 0.1);
+  --color-gold: #ff4d4d;
+  --color-gold-hi: #fff9c4;
+  --color-gold-lo: #fde68a;
+  --color-ink: #2d2d2d;
+  --color-ink-2: #4a4a4a;
+  --color-ink-3: #6b6b6b;
+  --color-ideal: #059669;
+  --color-near: #d97706;
+  --color-work: #e53838;
+  --color-danger: #dc2626;
+  --color-on-gold: #2d2d2d;
+
+  --color-paper: #fdfbf7;
+  --color-paper-aged: #f5efe2;
+  --color-pencil: #2d2d2d;
+  --color-pencil-soft: #4a4a4a;
+  --color-pencil-muted: #6b6b6b;
+  --color-marker: #ff4d4d;
+  --color-marker-deep: #e53838;
+  --color-ballpoint: #2d5da1;
+  --color-postit: #fff9c4;
+  --color-postit-deep: #fde68a;
+  --color-emerald: #059669;
+  --color-amber: #d97706;
+  --color-red: #dc2626;
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  --radius-card: 18px 28px 22px 32px;
+  --radius-chip: 14px 20px 16px 22px;
+
+  --shadow-hard-sm: 3px 3px 0 0 #2d2d2d;
+  --shadow-hard-md: 5px 5px 0 0 #2d2d2d;
+  --shadow-hard-marker: 4px 4px 0 0 #ff4d4d;
+
+  --radius-wobble-sm: 14px 20px 16px 22px;
+  --radius-wobble-md: 18px 28px 22px 32px;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-paper);
+  background-image: radial-gradient(circle at 1px 1px, rgba(45,45,45,0.04) 1px, transparent 0);
+  background-size: 22px 22px;
+  color: var(--color-pencil);
+  font-family: var(--font-body), "PatrickHand", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-postit);
+  color: var(--color-pencil);
+}
+
+/* Font helpers */
+.font-display {
+  font-family: var(--font-display), "Kalam", system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+.font-body {
+  font-family: var(--font-body), "PatrickHand", system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ---------- FreeHarmony-compatible classes (used by components) ---------- */
+
+.card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-pencil);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-hard-sm);
+}
+
+.numeral {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.label-caps {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-pencil-soft);
+  font-weight: 500;
+}
+
+.gold-gradient {
+  background: var(--color-postit);
+  border: 2px solid var(--color-pencil);
+  box-shadow: var(--shadow-hard-sm);
+  color: var(--color-pencil);
+}
+
+.btn-press {
+  transition: transform 120ms cubic-bezier(0.22, 1, 0.36, 1), opacity 120ms ease;
+}
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+/* ---------- LooksMax utility classes ---------- */
+
+.wobble-sm { border-radius: var(--radius-wobble-sm); }
+.wobble-md { border-radius: var(--radius-wobble-md); }
+
+.hard-shadow { box-shadow: var(--shadow-hard-md); }
+.hard-shadow-sm { box-shadow: var(--shadow-hard-sm); }
+.hard-shadow-marker { box-shadow: var(--shadow-hard-marker); }
+
+.pencil-border { border: 2px solid var(--color-pencil); }
+
+.tilt-l { transform: rotate(-1deg); }
+.tilt-r { transform: rotate(1deg); }
+.tilt-l-2 { transform: rotate(-1.6deg); }
+.tilt-r-2 { transform: rotate(1.6deg); }
+
+.dashed-border { border: 2px dashed var(--color-pencil); }
+.dashed-border-marker { border: 2px dashed var(--color-marker); }
+
+.btn-postit {
+  background: var(--color-postit);
+  border: 2px solid var(--color-pencil);
+  box-shadow: var(--shadow-hard-sm);
+  color: var(--color-pencil);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn-postit:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-hard-md);
+}
+.btn-postit:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+.btn-marker {
+  background: var(--color-marker);
+  border: 2px solid var(--color-pencil);
+  box-shadow: var(--shadow-hard-sm);
+  color: #ffffff;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn-marker:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-hard-md);
+}
+.btn-marker:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  color: var(--color-marker);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.scribble-underline {
+  background-image: linear-gradient(transparent 88%, rgba(255, 77, 77, 0.55) 0);
+  background-size: 100% 100%;
+}
+
+.paper-texture {
+  background-color: var(--color-paper);
+  background-image: radial-gradient(circle at 1px 1px, rgba(45,45,45,0.04) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* ---------- Animations ---------- */
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes jiggle {
+  0%, 100% { transform: rotate(-1deg); }
+  25% { transform: rotate(1deg); }
+  50% { transform: rotate(-2deg); }
+  75% { transform: rotate(1.5deg); }
+}
+
+@keyframes pulse-marker {
+  0%, 100% { box-shadow: var(--shadow-hard-sm); }
+  50% { box-shadow: var(--shadow-hard-sm), 0 0 0 6px rgba(255, 77, 77, 0.18); }
+}
+
+.animate-in { animation: fade-in 0.5s ease-out both; }
+.animate-jiggle { animation: jiggle 0.4s ease-in-out; }
+.animate-pulse-marker { animation: pulse-marker 1.8s ease-in-out infinite; }
+
+/* FreeHarmony scan-sequence animations */
+.fh-scanline {
+  animation: fh-sweep 450ms cubic-bezier(0.45, 0, 0.55, 1) 2 alternate;
+}
+@keyframes fh-sweep {
+  from { transform: translateY(-10%); }
+  to { transform: translateY(520%); }
+}
+.fh-status { animation: fh-fade 220ms ease-out; }
+@keyframes fh-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fh-land {
+  0% { transform: scale(1); filter: brightness(1); }
+  40% { transform: scale(1.08); filter: brightness(1.25); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+.fh-enter > * {
+  animation: fh-rise 350ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes fh-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fh-enter > *:nth-child(1) { animation-delay: 40ms; }
+.fh-enter > *:nth-child(2) { animation-delay: 130ms; }
+.fh-enter > *:nth-child(3) { animation-delay: 220ms; }
+.fh-enter > *:nth-child(4) { animation-delay: 310ms; }
+.fh-enter > *:nth-child(5) { animation-delay: 400ms; }
+.fh-enter > *:nth-child(6) { animation-delay: 490ms; }
+.fh-enter > *:nth-child(7) { animation-delay: 580ms; }
+
+@keyframes fh-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.45); transform: scale(1); }
+  50% { box-shadow: 0 0 22px 4px rgba(255, 77, 77, 0.25); transform: scale(1.035); }
+}
+.fh-improve-pill { animation: fh-pulse 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .tilt-l, .tilt-r, .tilt-l-2, .tilt-r-2 { transform: none !important; }
+  .fh-scanline, .fh-status, .fh-enter > * { animation: none !important; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--color-paper-aged); }
+::-webkit-scrollbar-thumb { background: var(--color-pencil); border: 2px solid var(--color-paper-aged); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-marker); }

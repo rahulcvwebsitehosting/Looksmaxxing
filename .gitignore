@@ -1,0 +1,10 @@
+node_modules
+.next
+.env*
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+.vercel
+
+# mediapipe assets downloaded by prepare-assets.mjs
+looksmax-ai/public/mediapipe/
